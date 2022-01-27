@@ -1,0 +1,33 @@
+.header{
+    @include flexSetting(center, center);
+    margin: .5rem 0;    
+    &--title{
+        color: $secondary-color;
+        font-size: clamp(1rem, 5vw, 3rem);
+        letter-spacing: clamp(0.05rem, 1.2vw, .5rem);
+        & .ship-ic{
+            margin: 0 .2rem;
+            fill: $green;
+            width: clamp(15px, 5vw, 35px);
+            height: clamp(15px, 5vw, 35px);
+            animation: wave 1.3s ease infinite;
+            box-sizing: unset;
+            position: relative;
+        }
+    }
+}
+
+@keyframes wave {
+    0%{
+        top: 0;
+        transform: scale(1);
+    }
+    50%{
+        top: 5px;
+        transform: scale(1.05);
+    }
+    100%{
+        top: 0;
+        transform: scale(1);
+    }
+}

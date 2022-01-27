@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+*, *::after, *::before{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+$primary-color: #002233;
+$secondary-color: #FFF;
+$blue: #0066FF;
+$green: #00FF94;
+
+$custom-font: 'Montserrat', sans-serif;
+
+html{
+    background-color: $primary-color;
+    color: $secondary-color;
+    font-family: $custom-font;
+}
+
+@mixin flexSetting($justify, $align, $isColumn: false) {
+    display: flex;
+    
+    @if $isColumn {
+      flex-direction: column;
+    }
+  
+    justify-content: $justify;
+    align-items: $align;
+  }
+  
+  .none{
+    display: none !important;
+  }
