@@ -18,6 +18,10 @@ html{
     font-family: $custom-font;
 }
 
+.cursor-grabbing{
+  cursor: grabbing !important;
+}
+
 @mixin flexSetting($justify, $align, $isColumn: false) {
     display: flex;
     

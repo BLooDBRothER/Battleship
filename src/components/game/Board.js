@@ -5,7 +5,7 @@ const Board = () => {
   const [gridCount, setGridCount] = useState([...Array(100).keys()]);
   return (
       <div className="game-board">
-        {gridCount.map(cnt => <Grid key={cnt} />)}
+        {gridCount.map(cnt => <Grid key={cnt} id={cnt}/>)}
       </div>
   );
 };

@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaMapPin } from 'react-icons/fa';
 import ShipGroup from './Ship';
 
 const Ships = () => {
