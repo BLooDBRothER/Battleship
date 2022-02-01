@@ -1,4 +1,5 @@
 import React from 'react';
+import Game from './components/game/Game';
 import Header from './components/Header';
 import BgSVG from './components/utils/BgSVG';
 
@@ -8,6 +9,7 @@ function App() {
     <>
       <Header />
       <BgSVG />
+      <Game />
     </>
   );
 }
