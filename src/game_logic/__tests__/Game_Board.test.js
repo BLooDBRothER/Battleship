@@ -5,7 +5,6 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
     let gameBoard;
     beforeAll(() => {
         gameBoard = Game_Board();
-        gameBoard.initialize();
     });
 
     it("Game board initial value", () => {
@@ -16,7 +15,7 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
         const board = gameBoard.getGameBoard();
         board.forEach(row => {
             rowCheck(row, mockGridObj);
-        })
+        });
         expect(mockGridObj.mock.calls.length).toBe(100);
         for (let i = 0; i < 100; i++) {
             expect(mockGridObj.mock.results[0].value).toEqual({
@@ -35,51 +34,71 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
     });
 
     it("check ship palcement horizontal", () => {
-        expect(gameBoard.placeShip(4, "horizontal", [0,7])).toBeFalsy();
-        expect(gameBoard.placeShip(4, "horizontal", [9,7])).toBeFalsy();
-        expect(gameBoard.placeShip(1, "horizontal", [0,9])).toBeTruthy();
+        expect(gameBoard.assignShipCoordinates(4, "horizontal", [0,7], "battleship_1")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(4, "horizontal", [9,7], "battleship_1")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(3, "horizontal", [0,5], "cruiser_1")).toBeTruthy();
     });
 
     it("check ship palcement vertical", () => {
-        expect(gameBoard.placeShip(4, "vertical", [7,0])).toBeFalsy();
-        expect(gameBoard.placeShip(4, "vertical", [9,7])).toBeFalsy();
-        expect(gameBoard.placeShip(1, "vertical", [2,9])).toBeTruthy();
+        expect(gameBoard.assignShipCoordinates(4, "vertical", [7,0], "battleship_1")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(4, "vertical", [9,7], "battleship_1")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(3, "vertical", [2,9], "cruiser_2")).toBeTruthy();
     });
 
     it("Check ship placement if Neighbour present horizontal", () => {
         const gridData = JSON.stringify({isHit: false, ship: Ship(2)});
-        expect(gameBoard.placeShip(2, "horizontal", [3,4])).toBeTruthy();
+
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,4], "submarnie_1")).toBeTruthy();
+        
         expect(JSON.stringify(gameBoard.getGridData([3,4]))).toEqual(gridData);
         expect(JSON.stringify(gameBoard.getGridData([3,5]))).toEqual(gridData);
-        expect(gameBoard.placeShip(2, "horizontal", [2,3])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [3,3])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [4,3])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [2,4])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [3,4])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [4,4])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [2,5])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [3,5])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [4,5])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [2,6])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [3,6])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "horizontal", [4,6])).toBeFalsy();
+
+        // Check for neighbour and overlap placement
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [2,3], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,3], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [4,3], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [2,4], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,4], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [4,4], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [2,5], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,5], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [4,5], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [2,6], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,6], "submarnie_2")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [4,6], "submarnie_2")).toBeFalsy();
     });
     it("Check ship placement if Neighbour present vertical", () => {
         const gridData = JSON.stringify({isHit: false, ship: Ship(2)});
-        expect(gameBoard.placeShip(2, "vertical", [7,5])).toBeTruthy();
+
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [7,5], "submarnie_2")).toBeTruthy();
+
         expect(JSON.stringify(gameBoard.getGridData([7,5]))).toEqual(gridData);
         expect(JSON.stringify(gameBoard.getGridData([8,5]))).toEqual(gridData);
-        expect(gameBoard.placeShip(2, "vertical", [6,4])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [6,5])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [6,6])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [7,4])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [7,5])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [7,6])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [8,4])).toBeFalsy();  
-        expect(gameBoard.placeShip(2, "vertical", [8,5])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [8,6])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [9,4])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [9,5])).toBeFalsy();
-        expect(gameBoard.placeShip(2, "vertical", [9,6])).toBeFalsy();
+
+        // Check for neighbour and overlap placement
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [6,4], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [6,5], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [6,6], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [7,4], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [7,5], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [7,6], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [8,4], "submarnie_3")).toBeFalsy();  
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [8,5], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [8,6], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [9,4], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [9,5], "submarnie_3")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [9,6], "submarnie_3")).toBeFalsy();
+    });
+
+    it("remove ship", () => {
+        const gridObj = JSON.stringify({isHit: false, ship: null});
+        gameBoard.removeShip("cruiser_1");
+        gameBoard.removeShip("cruiser_2");
+        expect(JSON.stringify(gameBoard.getGridData([0,5]))).toEqual(gridObj);
+        expect(JSON.stringify(gameBoard.getGridData([0,6]))).toEqual(gridObj);
+        expect(JSON.stringify(gameBoard.getGridData([0,7]))).toEqual(gridObj);
+        expect(JSON.stringify(gameBoard.getGridData([2,9]))).toEqual(gridObj);
+        expect(JSON.stringify(gameBoard.getGridData([3,9]))).toEqual(gridObj);
+        expect(JSON.stringify(gameBoard.getGridData([4,9]))).toEqual(gridObj);
     });
 });

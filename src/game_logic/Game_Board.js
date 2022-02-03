@@ -1,32 +1,46 @@
 import { Ship } from "./Ship";
 
 export const Game_Board = () => {
-    const gameBoard = [];
-    const shipCoordinate = {};
+    
     const initialize = () => {
+        const tempBoard = [];
         for(let i=0; i<10; i++){
-            gameBoard.push([]);
+            tempBoard.push([]);
             for(let j=0; j<10; j++){
                 const gridObj = {
                     isHit: false,
                     ship: null
                 }
-                gameBoard[i].push(gridObj);
+                tempBoard[i].push(gridObj);
             }
         }
+        return tempBoard;
     }
+    const gameBoard = initialize();
+    const shipCoordinate = {};
     const getGameBoard = () => gameBoard;
 
-    const encodeCoordinateToString = (row, column) => {
-        return String(row)+String(column);
-    }
-
-    const decodeCoodinateToPoints = (coordinate) => {
-        return coordinate.split('').map(pts => +pts);
+    const removeShip = (shipName) => {
+        const shipData = shipCoordinate[shipName];
+        const coordinate = shipData.coordinate;
+        if(shipData.orientation === "horizontal"){
+            for(let i=0; i<shipData.length; i++){
+                gameBoard[coordinate[0]][coordinate[1]+i] = {...gameBoard[coordinate[0]][coordinate[1]+i], ship: null};
+            }
+        }
+        else{
+            for(let i=0; i<shipData.length; i++){
+                gameBoard[coordinate[0]+i][coordinate[1]] = {...gameBoard[coordinate[0]+i][coordinate[1]], ship: null};
+            }    
+        }
     }
     
     const getGridData = ([...coordinate]) => {
         return gameBoard[coordinate[0]][coordinate[1]];
+    }
+
+    const getShipCoordinate = (shipName) =>{
+        return shipCoordinate[shipName];
     }
 
     const placeShip = (length, orientation, [...coordinate]) => {
@@ -42,11 +56,13 @@ export const Game_Board = () => {
         if(!isPlacementPossible || isNeighbourShipPresent){
             return false;
         }
-        assignShipCoordinates(coordinate[0], coordinate[1], length, orientation);
+        // assignShipCoordinates(coordinate[0], coordinate[1], length, orientation, shipName);
         return true;
     }
 
-    const assignShipCoordinates = (row, column, length, orientation) => {
+    const assignShipCoordinates = (length, orientation, [...coordinate], shipName) => {
+        if(!placeShip(length, orientation, coordinate)) return false;
+        const [row, column] = coordinate;
         const ship = Ship(length);
         if(orientation === "horizontal"){
             for(let columnIndex=column; columnIndex<column+length; columnIndex++){
@@ -58,7 +74,9 @@ export const Game_Board = () => {
                 gameBoard[rowIndex][column] = {...gameBoard[rowIndex][column], ship};
             }
         }
-        shipCoordinate[encodeCoordinateToString(row, column)] = length;
+        shipCoordinate[shipName] = {coordinate: [row, column], length, orientation}
+        return true;
+        // shipCoordinate[encodeCoordinateToString(row, column)] = {length, orientation};
     }
 
     const isValidCoordinate = (row, column) => {
@@ -90,10 +108,6 @@ export const Game_Board = () => {
             const currRow = row + currRowIndex;
             for(let currColumnIndex = -1; currColumnIndex<=1; currColumnIndex++){
                 const currColumn = column + currColumnIndex;
-                // console.log(currRow, currColumn, length);
-                // if(currRow === 8 && currColumn === 5){
-                //     console.log(getGridData([currRow, currColumn]).ship);
-                // }
                 if(isValidCoordinate(currRow, currColumn) && getGridData([currRow, currColumn]).ship){
                     return true;
                 }
@@ -102,7 +116,7 @@ export const Game_Board = () => {
         return false;
     }
     
-    return {initialize, getGameBoard, getGridData, placeShip};
+    return {getGameBoard, getGridData, getShipCoordinate, placeShip, assignShipCoordinates, removeShip};
 }
 
 // const initializeShip = () =>{
