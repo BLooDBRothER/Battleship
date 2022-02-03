@@ -9,6 +9,26 @@ $highlight-negative: rgb(189, 167, 167);
 .game{
     margin: 1rem;
     @include flexSetting(center, center);
+
+    & .ship-container{
+        position: relative;
+        margin: .5rem;
+        padding: .2rem;
+        & .game-ship--rotate{
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+
+            &:hover{
+                fill: $blue;
+            }
+        }
+    }
+
     &-ships{
         @include flexSetting(space-evenly, center, true);
         &--group{
@@ -19,6 +39,9 @@ $highlight-negative: rgb(189, 167, 167);
 
     & .game-ship{
         @include flexSetting(flex-start, center);
+        &.vertical{
+            flex-direction: column;
+        }
         margin: 1rem;
         cursor: grab;
         background-color: $primary-color;
@@ -52,6 +75,10 @@ $highlight-negative: rgb(189, 167, 167);
             background-color: $grid-color;
             position: relative;
             border: none;
+            & .ship-container{
+                margin: 0rem;
+                padding: 0rem;
+            }
             & .game-ship{
                 margin: 0;
                 gap: 1px;

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Grid from './Grid';
 
-const Board = () => {
-  const [gridCount, setGridCount] = useState([...Array(100).keys()]);
+const Board = ({playerBoard, setPlayerBoard}) => {
   return (
       <div className="game-board">
-        {gridCount.map(cnt => <Grid key={cnt} id={cnt}/>)}
+        {playerBoard.map((row, rowIdx) => {
+          return row.map((grid, gridIdx) => {
+            return <Grid key={`${rowIdx}+${gridIdx}`} row={rowIdx} column={gridIdx} data={grid} setPlayerBoard={playerBoard} />
+          })
+        })}
       </div>
   );
 };

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { FaMapPin } from 'react-icons/fa';
+import { AiOutlineRotateRight } from 'react-icons/ai';
+import { playerData } from './Game';
 
 const ShipGroup = ({ totalShips, shipLength, shipName }) => {
     const [ship, setShip] = useState([]);
+    
     const returnShip = () => {
         const ship = [];
         for (let i = 0; i < totalShips; i++) {
             const shipPart = returnShipPart();
-            ship.push(<Ship key={`ship-${i}`} shipLength={shipLength} shipPart={shipPart} />);
+            ship.push(<Ship key={`ship-${i}`} shipLength={shipLength} shipPart={shipPart} shipName={`${shipName}_${i}`} />);
         }
         setShip(ship);
     }
@@ -28,26 +31,58 @@ const ShipGroup = ({ totalShips, shipLength, shipName }) => {
     );
 };
 
-const Ship = ({ shipPart, shipLength }) => {
+const Ship = ({ shipPart, shipLength, shipName }) => {
+    const [isRotateVisible, setIsRotateVisible] = useState(false);
+    const [isVertical, setIsVertical] = useState(false);
+
     //Event Listener
     const handleDragStart = (e) => {
-        console.log(e.target, shipLength);
-        e.target.dataset.length = shipLength;
-        e.dataTransfer.setData("length", shipLength);
-        e.currentTarget.classList.add("dragging");
+        setIsRotateVisible(false);
+        if(playerData.getShipCoordinate(shipName)){
+            playerData.removeShip(shipName);
+            setTimeout(() => {e.target.classList.add("none");}, 10);
+        }
+        e.currentTarget.parentElement.dataset.length = shipLength;
+        e.currentTarget.parentElement.dataset.orientation = isVertical ? "vertical" : "horizontal";
+        e.currentTarget.parentElement.classList.add("dragging");
+        e.dataTransfer.setData("shipName", shipName);
     }
 
     const handleDragEnd = (e) => {
         delete e.target.dataset.length;
-        e.target.classList.remove("dragging");
+        delete e.target.dataset.orientation;
+        e.currentTarget.parentElement.classList.remove("dragging");
         e.target.classList.remove("cursor-grabbing");
+        e.target.classList.remove("none");
     }
     const changeCursorGrabbing = (isGrabbed, e) => {
         isGrabbed ? e.currentTarget.classList.add("cursor-grabbing") : e.currentTarget.classList.remove("cursor-grabbing");
     }
+
+    const handleRotate = (e) => {
+        const coordinate = playerData.getShipCoordinate(shipName)?.coordinate;
+        const toggleOrientation = isVertical ? "horizontal" : "vertical";
+        const currentOrientation = isVertical ? "vertical" : "horizontal";
+        // console.log(coordinate, orientation);
+        if(coordinate) {
+            playerData.removeShip(shipName);
+            console.log(playerData.placeShip(shipLength, toggleOrientation, coordinate), shipName);
+            if(!playerData.placeShip(shipLength, toggleOrientation, coordinate)){
+                playerData.assignShipCoordinates(shipLength, currentOrientation, coordinate, shipName);
+                return;
+            }
+            else{
+                playerData.assignShipCoordinates(shipLength, toggleOrientation, coordinate, shipName);
+            }
+        };
+        setIsVertical(prev => !prev);
+    }
     return (
-        <div className={`game-ship ship-${shipLength}`} draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd} onMouseDown={changeCursorGrabbing.bind(null, true)} onMouseUp={changeCursorGrabbing.bind(null, false)}>
-            {shipPart}
+        <div className='ship-container' onMouseEnter={() => {setIsRotateVisible(true)}} onMouseLeave={() => {setIsRotateVisible(false)}}>
+            {isRotateVisible && <AiOutlineRotateRight className='game-ship--rotate' onClick={handleRotate} />}
+            <div className={`game-ship ship-${shipLength} ${isVertical && "vertical"}`} draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd} onMouseDown={changeCursorGrabbing.bind(null, true)} onMouseUp={changeCursorGrabbing.bind(null, false)}>
+                {shipPart}
+            </div>
         </div>
     )
 }
