@@ -46,7 +46,7 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
     });
 
     it("Check ship placement if Neighbour present horizontal", () => {
-        const gridData = JSON.stringify({isHit: false, ship: Ship(2)});
+        const gridData = JSON.stringify({isHit: false, ship: Ship(2, "horizontal", [3,4])});
 
         expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,4], "submarnie_1")).toBeTruthy();
         
@@ -68,7 +68,7 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
         expect(gameBoard.assignShipCoordinates(2, "horizontal", [4,6], "submarnie_2")).toBeFalsy();
     });
     it("Check ship placement if Neighbour present vertical", () => {
-        const gridData = JSON.stringify({isHit: false, ship: Ship(2)});
+        const gridData = JSON.stringify({isHit: false, ship: Ship(2, "vertical", [7,5])});
 
         expect(gameBoard.assignShipCoordinates(2, "vertical", [7,5], "submarnie_2")).toBeTruthy();
 
