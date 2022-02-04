@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { gameDataContext } from './Game';
 import { ACTIONS, playerData } from './reducer';
 import Ship from './Ship';
@@ -6,13 +6,13 @@ import Ship from './Ship';
 const togglePositiveHighlightGrid = (toHighlight, row, column, shipLength, orientation) => {
   if(orientation === "horizontal"){
     for (let i = 0; i < shipLength; i++) {
-      const shipPlace = document.getElementById(`${row} ${column+i}`);
+      const shipPlace = document.getElementById(`grid-${row}-${column+i}`);
       toHighlight ? shipPlace.classList.add("highlight-positive") : shipPlace.classList.remove("highlight-positive");
     }
   }
   else{
     for (let i = 0; i < shipLength; i++) {
-      const shipPlace = document.getElementById(`${row+i} ${column}`);
+      const shipPlace = document.getElementById(`grid-${row+i}-${column}`);
       toHighlight ? shipPlace.classList.add("highlight-positive") : shipPlace.classList.remove("highlight-positive");
     }
   }
@@ -22,13 +22,13 @@ const togglePositiveHighlightGrid = (toHighlight, row, column, shipLength, orien
 const toggleNegativeHighlightGrid = (toHighlight, row, column, shipLength, orientation) => {
   if(orientation === "horizontal"){
     for(let i=0; i<shipLength && column+i<=9; i++){
-      const shipPlace = document.getElementById(`${row} ${column+i}`);
+      const shipPlace = document.getElementById(`grid-${row}-${column+i}`);
       toHighlight ? shipPlace.classList.add("highlight-negative") : shipPlace.classList.remove("highlight-negative");
     }
   }
   else{
     for(let i=0; i<shipLength && row+i<=9; i++){
-      const shipPlace = document.getElementById(`${row+i} ${column}`);
+      const shipPlace = document.getElementById(`grid-${row+i}-${column}`);
       toHighlight ? shipPlace.classList.add("highlight-negative") : shipPlace.classList.remove("highlight-negative");
     }
   }
@@ -36,7 +36,7 @@ const toggleNegativeHighlightGrid = (toHighlight, row, column, shipLength, orien
 
 const Grid = ({ row, column, data }) => {
 
-  const [toggleData, setToggleData] = useState({});
+  const [toggleData, setToggleData] = useState(null);
   const [gameData, dispatch] = useContext(gameDataContext);
   const [ship, setShip] = useState(false);
 
@@ -58,20 +58,20 @@ const Grid = ({ row, column, data }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameData]);
 
-  // useEffect(()=>{console.log(row, column, ship)}, [ship]);
-
   const handleHighlightGrid = () => {
+    if(toggleData === null) return;
     toggleData.isValidPlace 
       ? togglePositiveHighlightGrid(toggleData.toEnable, row, column, toggleData.length, toggleData.orientation)
       : toggleNegativeHighlightGrid(toggleData.toEnable, row, column, toggleData.length, toggleData.orientation);
   }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(handleHighlightGrid, [toggleData]);
+  useLayoutEffect(handleHighlightGrid, [toggleData]);
 
   //Evnet Listener
   const handleDragEnter = (e) => {
+    const isOverLapping = document.querySelector(`#grid-${row}-${column} .ship-container`);
+    if(isOverLapping && !isOverLapping.classList.contains("dragging")) return;
     const draggedElement = document.querySelector(".dragging");
-    // playerData.placeShip()
     const length = +draggedElement.dataset.length;
     const orientation = draggedElement.dataset.orientation;
     if(playerData.placeShip(length, orientation, [row, column])){
@@ -87,7 +87,7 @@ const Grid = ({ row, column, data }) => {
   }
 
   const handleDragLeave = (e) => {
-    setToggleData(prev => ({...prev, toEnable:!prev.toEnable}))
+    setToggleData(prev => ({...prev, toEnable:false}))
   }
 
   const handleDragOver = (e) => {
@@ -108,17 +108,21 @@ const Grid = ({ row, column, data }) => {
         shipParent.removeChild(draggedElement);
       }
     }
-    setToggleData(prev => ({...prev, toEnable:!prev.toEnable}))
+    setToggleData(prev => ({...prev, toEnable:false}))
   }
   return (
     <div 
-     id={`${row} ${column}`}
+     id={`grid-${row}-${column}`}
      className='game-board--grid' 
      onDragOver={handleDragOver} 
      onDrop={handleDrop} 
      onDragEnter={handleDragEnter} 
      onDragLeave={handleDragLeave}>
-     {ship && <Ship shipLength={ship.shipData.length} shipName={ship.shipName} dispatch={dispatch} /> }
+     {ship && <Ship 
+                shipLength={ship.shipData.length} 
+                shipName={ship.shipName} 
+                dispatch={dispatch} 
+                orientationIsVertical={ship.shipData.orientation === "vertical" ? true: false} /> }
     </div>
     )
 };

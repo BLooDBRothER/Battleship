@@ -3,9 +3,12 @@ import { FaMapPin } from 'react-icons/fa';
 import { AiOutlineRotateRight } from 'react-icons/ai';
 import { ACTIONS, playerData } from './reducer';
 
-const Ship = ({ shipLength, shipName, dispatch }) => {
+const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false}) => {
     const [isRotateVisible, setIsRotateVisible] = useState(false);
     const [isVertical, setIsVertical] = useState(false);
+    useEffect(() => {
+        setIsVertical(orientationIsVertical)
+    },[orientationIsVertical]);
 
     const returnShipPart = () => {
         const shipPart = [];
@@ -44,22 +47,14 @@ const Ship = ({ shipLength, shipName, dispatch }) => {
     }
 
     const handleRotate = (e) => {
-        const coordinate = playerData.getShipCoordinate(shipName)?.coordinate;
-        const toggleOrientation = isVertical ? "horizontal" : "vertical";
-        const currentOrientation = isVertical ? "vertical" : "horizontal";
-        console.log(coordinate, toggleOrientation);
-        if(coordinate) {
-            playerData.removeShip(shipName);
-            console.log(playerData.placeShip(shipLength, toggleOrientation, coordinate), shipName);
-            if(!playerData.placeShip(shipLength, toggleOrientation, coordinate)){
-                playerData.assignShipCoordinates(shipLength, currentOrientation, coordinate, shipName);
-                return;
-            }
-            else{
-                playerData.assignShipCoordinates(shipLength, toggleOrientation, coordinate, shipName);
-            }
-        };
-        setIsVertical(prev => !prev);
+        const ship = playerData.getShipData()[shipName];
+        if(ship){
+            const [toggleOrientation, currentOrientation] = isVertical ? ["horizontal", "vertical"] : ["vertical", "horizontal"];
+            dispatch({type: ACTIONS.ROTATE_SHIP, payload: {length: shipLength, toggleOrientation, currentOrientation, coordinate: ship.coordinate, shipName}});
+        }
+        else{
+            setIsVertical(prev => !prev);
+        }
     }
     return (
         <div className={`ship-container`} onMouseEnter={() => {setIsRotateVisible(true)}} onMouseLeave={() => {setIsRotateVisible(false)}}>

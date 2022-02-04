@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext} from 'react';
 import { gameDataContext } from './Game';
 import Grid from './Grid';
 
 const Board = () => {
-  const [gameData, dispatch] = useContext(gameDataContext);
-  useEffect(() => {
-    console.log(gameData);
-  })
+  const gameData = useContext(gameDataContext)[0];
   return (
       <div className="game-board">
         {gameData.board.player.map((row, rowIdx) => {
