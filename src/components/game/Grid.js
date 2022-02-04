@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { playerData } from './Game';
+import React, { useState, useEffect, useContext } from 'react';
+import { gameDataContext } from './Game';
+import { ACTIONS, playerData } from './reducer';
+import Ship from './Ship';
 
 const togglePositiveHighlightGrid = (toHighlight, row, column, shipLength, orientation) => {
   if(orientation === "horizontal"){
@@ -32,9 +34,31 @@ const toggleNegativeHighlightGrid = (toHighlight, row, column, shipLength, orien
   }
 }
 
-const Grid = ({ row, column, data, setPlayerBoad }) => {
+const Grid = ({ row, column, data }) => {
 
   const [toggleData, setToggleData] = useState({});
+  const [gameData, dispatch] = useContext(gameDataContext);
+  const [ship, setShip] = useState(false);
+
+  useEffect(() => {
+    const shipData = gameData.shipData.player;
+    if(Object.keys(shipData).length !== 0){
+      for(let shipName in shipData){
+        const ship = shipData[shipName];
+        const [shipRow, shipCol] = ship.coordinate;
+        if(shipRow === row && shipCol === column){
+          setShip({shipName, shipData: ship});
+          return;
+        }
+        else{
+          setShip(false);
+        }
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameData]);
+
+  // useEffect(()=>{console.log(row, column, ship)}, [ship]);
 
   const handleHighlightGrid = () => {
     toggleData.isValidPlace 
@@ -76,8 +100,13 @@ const Grid = ({ row, column, data, setPlayerBoad }) => {
     const length = +draggedElement.dataset.length;
     const orientation = draggedElement.dataset.orientation;
     const shipName = e.dataTransfer.getData("shipName");
-    if(playerData.assignShipCoordinates(length, orientation, [row, column], shipName)){
-      e.target.appendChild(draggedElement);
+    if(toggleData.isValidPlace){
+      dispatch({type: ACTIONS.ADD_SHIP, payload: {length, orientation, coordinate: [row, column], shipName}});
+      const shipType = shipName.split("_")[0];
+      const shipParent = document.querySelector(`.game-ship--${shipType}`);
+      if(shipParent.contains(draggedElement)){
+        shipParent.removeChild(draggedElement);
+      }
     }
     setToggleData(prev => ({...prev, toEnable:!prev.toEnable}))
   }
@@ -89,6 +118,7 @@ const Grid = ({ row, column, data, setPlayerBoad }) => {
      onDrop={handleDrop} 
      onDragEnter={handleDragEnter} 
      onDragLeave={handleDragLeave}>
+     {ship && <Ship shipLength={ship.shipData.length} shipName={ship.shipName} dispatch={dispatch} /> }
     </div>
     )
 };

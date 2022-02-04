@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FaMapPin } from 'react-icons/fa';
 import { AiOutlineRotateRight } from 'react-icons/ai';
-import { playerData } from './Game';
+import { ACTIONS, playerData } from './reducer';
 
-const ShipGroup = ({ totalShips, shipLength, shipName }) => {
-    const [ship, setShip] = useState([]);
-    
-    const returnShip = () => {
-        const ship = [];
-        for (let i = 0; i < totalShips; i++) {
-            const shipPart = returnShipPart();
-            ship.push(<Ship key={`ship-${i}`} shipLength={shipLength} shipPart={shipPart} shipName={`${shipName}_${i}`} />);
-        }
-        setShip(ship);
-    }
+const Ship = ({ shipLength, shipName, dispatch }) => {
+    const [isRotateVisible, setIsRotateVisible] = useState(false);
+    const [isVertical, setIsVertical] = useState(false);
+
     const returnShipPart = () => {
         const shipPart = [];
         for (let i = 0; i < shipLength; i++) {
@@ -21,24 +14,11 @@ const ShipGroup = ({ totalShips, shipLength, shipName }) => {
         }
         return shipPart;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(returnShip, []);
-
-    return (
-        <div className={`game-ships--group game-ship--${shipName}`}>
-            {ship}
-        </div>
-    );
-};
-
-const Ship = ({ shipPart, shipLength, shipName }) => {
-    const [isRotateVisible, setIsRotateVisible] = useState(false);
-    const [isVertical, setIsVertical] = useState(false);
 
     //Event Listener
     const handleDragStart = (e) => {
         setIsRotateVisible(false);
-        if(playerData.getShipCoordinate(shipName)){
+        if(playerData.getShipData()[shipName]){
             playerData.removeShip(shipName);
             setTimeout(() => {e.target.classList.add("none");}, 10);
         }
@@ -49,6 +29,10 @@ const Ship = ({ shipPart, shipLength, shipName }) => {
     }
 
     const handleDragEnd = (e) => {
+        const ship = playerData.getShipData()[shipName];
+        if(ship){
+            dispatch({type: ACTIONS.ADD_SHIP, payload: {length: shipLength, orientation: ship.orientation, coordinate: ship.coordinate, shipName}});
+        }
         delete e.target.dataset.length;
         delete e.target.dataset.orientation;
         e.currentTarget.parentElement.classList.remove("dragging");
@@ -63,7 +47,7 @@ const Ship = ({ shipPart, shipLength, shipName }) => {
         const coordinate = playerData.getShipCoordinate(shipName)?.coordinate;
         const toggleOrientation = isVertical ? "horizontal" : "vertical";
         const currentOrientation = isVertical ? "vertical" : "horizontal";
-        // console.log(coordinate, orientation);
+        console.log(coordinate, toggleOrientation);
         if(coordinate) {
             playerData.removeShip(shipName);
             console.log(playerData.placeShip(shipLength, toggleOrientation, coordinate), shipName);
@@ -78,10 +62,10 @@ const Ship = ({ shipPart, shipLength, shipName }) => {
         setIsVertical(prev => !prev);
     }
     return (
-        <div className='ship-container' onMouseEnter={() => {setIsRotateVisible(true)}} onMouseLeave={() => {setIsRotateVisible(false)}}>
+        <div className={`ship-container`} onMouseEnter={() => {setIsRotateVisible(true)}} onMouseLeave={() => {setIsRotateVisible(false)}}>
             {isRotateVisible && <AiOutlineRotateRight className='game-ship--rotate' onClick={handleRotate} />}
             <div className={`game-ship ship-${shipLength} ${isVertical && "vertical"}`} draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd} onMouseDown={changeCursorGrabbing.bind(null, true)} onMouseUp={changeCursorGrabbing.bind(null, false)}>
-                {shipPart}
+                {returnShipPart()}
             </div>
         </div>
     )
@@ -95,4 +79,4 @@ const ShipPart = () => {
     )
 }
 
-export default ShipGroup;
+export default Ship;

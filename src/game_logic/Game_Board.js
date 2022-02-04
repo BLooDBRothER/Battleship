@@ -73,7 +73,6 @@ export const Game_Board = () => {
                 gameBoard[rowIndex][column] = {...gameBoard[rowIndex][column], ship};
             }
         }
-        console.log(gameBoard);
         shipData[shipName] = ship;
         return true;
     }

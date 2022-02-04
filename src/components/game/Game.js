@@ -1,26 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Game_Board } from '../../game_logic/Game_Board';
+import React, { useState, useEffect, useReducer } from 'react';
 import Board from './Board';
+import { playerData, reducer } from './reducer';
 import Ships from './Ships';
 
-export const playerData = Game_Board();
+
+export const gameDataContext = React.createContext(null);
 
 const Game = () => {
-  const [playerBoard, setPlayerBoard] = useState([]);
+  const [gameData, dispatch] = useReducer(reducer, {
+    board: {
+      player: playerData.getGameBoard(),
+    },
+    shipData:{
+      player: playerData.getShipData(),
+    } 
+  });
   useEffect(() => {
-    setPlayerBoard(playerData.getGameBoard());
+    console.log(gameData)
+    // setPlayerBoard(playerData.getGameBoard());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log(playerBoard);
-  }, [playerBoard])
-
   return (
-    <div className='game'>
-        <Board playerBoard={playerBoard} setPlayerBoard={setPlayerBoard}/>
-        <Ships />
-    </div>
+    
+    <gameDataContext.Provider value={[gameData, dispatch]}>
+      <div className='game'>
+          <Board />
+          <Ships />
+      </div>
+    </gameDataContext.Provider>
   );
 };
 
