@@ -34,21 +34,21 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
     });
 
     it("check ship palcement horizontal", () => {
-        expect(gameBoard.assignShipCoordinates(4, "horizontal", [0,7], "battleship_1")).toBeFalsy();
-        expect(gameBoard.assignShipCoordinates(4, "horizontal", [9,7], "battleship_1")).toBeFalsy();
-        expect(gameBoard.assignShipCoordinates(3, "horizontal", [0,5], "cruiser_1")).toBeTruthy();
+        expect(gameBoard.assignShipCoordinates(4, "horizontal", [0,7], "battleship_0")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(4, "horizontal", [9,7], "battleship_0")).toBeFalsy();
+        expect(gameBoard.assignShipCoordinates(3, "horizontal", [0,5], "cruiser_0")).toBeTruthy();
     });
 
     it("check ship palcement vertical", () => {
         expect(gameBoard.assignShipCoordinates(4, "vertical", [7,0], "battleship_1")).toBeFalsy();
         expect(gameBoard.assignShipCoordinates(4, "vertical", [9,7], "battleship_1")).toBeFalsy();
-        expect(gameBoard.assignShipCoordinates(3, "vertical", [2,9], "cruiser_2")).toBeTruthy();
+        expect(gameBoard.assignShipCoordinates(3, "vertical", [2,9], "cruiser_1")).toBeTruthy();
     });
 
     it("Check ship placement if Neighbour present horizontal", () => {
         const gridData = JSON.stringify({isHit: false, ship: Ship(2, "horizontal", [3,4])});
 
-        expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,4], "submarnie_1")).toBeTruthy();
+        expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,4], "submarine_0")).toBeTruthy();
         
         expect(JSON.stringify(gameBoard.getGridData([3,4]))).toEqual(gridData);
         expect(JSON.stringify(gameBoard.getGridData([3,5]))).toEqual(gridData);
@@ -70,7 +70,7 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
     it("Check ship placement if Neighbour present vertical", () => {
         const gridData = JSON.stringify({isHit: false, ship: Ship(2, "vertical", [7,5])});
 
-        expect(gameBoard.assignShipCoordinates(2, "vertical", [7,5], "submarnie_2")).toBeTruthy();
+        expect(gameBoard.assignShipCoordinates(2, "vertical", [7,5], "submarine_1")).toBeTruthy();
 
         expect(JSON.stringify(gameBoard.getGridData([7,5]))).toEqual(gridData);
         expect(JSON.stringify(gameBoard.getGridData([8,5]))).toEqual(gridData);
@@ -92,13 +92,19 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
 
     it("remove ship", () => {
         const gridObj = JSON.stringify({isHit: false, ship: null});
+        gameBoard.removeShip("cruiser_0");
         gameBoard.removeShip("cruiser_1");
-        gameBoard.removeShip("cruiser_2");
         expect(JSON.stringify(gameBoard.getGridData([0,5]))).toEqual(gridObj);
         expect(JSON.stringify(gameBoard.getGridData([0,6]))).toEqual(gridObj);
         expect(JSON.stringify(gameBoard.getGridData([0,7]))).toEqual(gridObj);
         expect(JSON.stringify(gameBoard.getGridData([2,9]))).toEqual(gridObj);
         expect(JSON.stringify(gameBoard.getGridData([3,9]))).toEqual(gridObj);
         expect(JSON.stringify(gameBoard.getGridData([4,9]))).toEqual(gridObj);
+    });
+
+    it("Gnereate board i.e random ship placement", () => {
+        expect(gameBoard.generateBoard()).toBeTruthy();
+        const shipData = Object.keys(gameBoard.getShipData()).length;
+        expect(shipData).toBe(10);
     });
 });

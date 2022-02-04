@@ -113,8 +113,70 @@ export const Game_Board = () => {
         }
         return false;
     }
-    
-    return {getGameBoard, getGridData, getShipData, placeShip, assignShipCoordinates, removeShip};
+
+    const placeShipRandomly = (shipList) => {
+        if(shipList.length === 0) return;
+        let isShipPlaced = false;
+        while(!isShipPlaced){
+            const coordinate = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * 10)];
+            const orientation = Math.floor(Math.random() * 1000) % 2 ? "horizontal" : "vertical";
+            isShipPlaced = assignShipCoordinates(shipList[0].length, orientation, coordinate, shipList[0].shipName);
+        }
+        shipList = shipList.filter((ship, idx) => idx !== 0);
+        placeShipRandomly(shipList);
+    }
+
+    const generateBoard = () => {
+        const shipList = [
+            {
+                shipName: "battleship_0",
+                length: 4
+            },
+            {
+                shipName: "cruiser_0",
+                length: 3
+            },
+            {
+                shipName: "cruiser_1",
+                length: 3
+            },
+            {
+                shipName: "submarine_0",
+                length: 2
+            },
+            {
+                shipName: "submarine_1",
+                length: 2
+            },
+            {
+                shipName: "submarine_2",
+                length: 2
+            },
+            {
+                shipName: "boat_0",
+                length: 1
+            },
+            {
+                shipName: "boat_1",
+                length: 1
+            },
+            {
+                shipName: "boat_2",
+                length: 1
+            },
+            {
+                shipName: "boat_3",
+                length: 1
+            }
+        ];
+        for(let shipName in shipData){
+            removeShip(shipName);
+        }
+        placeShipRandomly(shipList);
+        return true;
+    }
+
+    return {getGameBoard, getGridData, getShipData, placeShip, assignShipCoordinates, removeShip, generateBoard};
 }
 
 // const initializeShip = () =>{
