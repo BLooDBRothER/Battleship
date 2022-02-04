@@ -8,7 +8,32 @@ $highlight-negative: rgb(189, 167, 167);
 
 .game{
     margin: 1rem;
-    @include flexSetting(center, center);
+    @include flexSetting(space-evenly, center);
+
+    &-menu{
+        &--option{
+            @include flexSetting(center, center);
+            margin: 1rem 0;
+            font-size: 1.4rem;
+            cursor: pointer;
+            &:hover{
+                background-color: #4158D0;
+                // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+                background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+                
+                color: $secondary-color;
+                background-clip: text;
+                text-fill-color: transparent;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                // animation: beat 1s ease-in-out infinite;
+            }
+            &-ic{
+                margin-right: .5rem;
+                fill: $ship-part-color;
+            }
+        }
+    }
 
     & .ship-container{
         position: relative;
@@ -68,7 +93,6 @@ $highlight-negative: rgb(189, 167, 167);
         border: $grid-border;
         background-color: $board-color;
         margin: 0 5rem;
-        // margin-left: 20rem;
         &--grid{
             width: $grid-size;
             height: $grid-size;
@@ -99,5 +123,15 @@ $highlight-negative: rgb(189, 167, 167);
         &--grid.highlight-negative{
             background-color: $highlight-negative;
         }
+    }
+}
+
+@keyframes beat {
+    0%{
+        transform: scale(0.8);
+    }
+    
+    100%{
+        transform: scale(0.8);
     }
 }
