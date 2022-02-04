@@ -104,7 +104,7 @@ const Grid = ({ row, column, data }) => {
       dispatch({type: ACTIONS.ADD_SHIP, payload: {length, orientation, coordinate: [row, column], shipName}});
       const shipType = shipName.split("_")[0];
       const shipParent = document.querySelector(`.game-ship--${shipType}`);
-      if(shipParent.contains(draggedElement)){
+      if(shipParent?.contains(draggedElement)){
         shipParent.removeChild(draggedElement);
       }
     }
