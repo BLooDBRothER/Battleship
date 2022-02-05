@@ -17,7 +17,7 @@ const Game = () => {
       player_1: player_1_Data.getShipData(),
       player_2: player_2_Data.getShipData(),
     },
-    isGameStarted: true,  
+    isGameStarted: false,  
   });
 
   useEffect(() => {

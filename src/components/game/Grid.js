@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { FaSkullCrossbones } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
+import { BiCrosshair } from 'react-icons/bi';
+import { VscDebugBreakpointLog } from 'react-icons/vsc';
 import { gameDataContext } from './Game';
 import { ACTIONS, player_1_Data } from './reducer';
 import Ship from './Ship';
@@ -120,14 +122,16 @@ const Grid = ({ row, column, data, isOwner }) => {
      onDrop={gameData.isGameStarted ? null : handleDrop} 
      onDragEnter={gameData.isGameStarted ? null : handleDragEnter} 
      onDragLeave={gameData.isGameStarted ? null : handleDragLeave}>
+     <VscDebugBreakpointLog className='grid-ic grid-ic--pointer' />
+     <BiCrosshair className='grid-ic grid-ic--crosshair' />
      {ship && isOwner && <Ship 
                 shipLength={ship.shipData.length} 
                 shipName={ship.shipName} 
                 dispatch={dispatch} 
                 orientationIsVertical={ship.shipData.orientation === "vertical" ? true: false}
                 isDraggable={!gameData.isGameStarted} /> }
-    {/* <GiCrossMark className='hit-ic hit-ic--fail' /> */}
-    {/* <FaSkullCrossbones className='hit-ic hit-ic--pass' /> */}
+    {/* <GiCrossMark className='grid-ic grid-ic--fail' /> */}
+    {/* <FaSkullCrossbones className='grid-ic grid-ic--pass' /> */}
     </div>
     )
 };

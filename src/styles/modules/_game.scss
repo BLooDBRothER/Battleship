@@ -3,7 +3,7 @@ $board-color: rgb(11, 209, 44);
 $grid-color: $primary-color;
 $grid-border: 1px solid rgb(11, 209, 44);
 $ship-part-color: #ef476f;
-$highlight-positive: $secondary-color;
+$highlight-positive: $green;
 $highlight-negative: rgb(189, 167, 167);
 
 .game{
@@ -19,7 +19,6 @@ $highlight-negative: rgb(189, 167, 167);
             &:hover{
                 background-color: #4158D0;
                 background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
-                
                 color: $secondary-color;
                 background-clip: text;
                 text-fill-color: transparent;
@@ -88,7 +87,8 @@ $highlight-negative: rgb(189, 167, 167);
         --total-grid-width: calc($grid-size * 10);
         $board-width: calc(var(--total-grid-width) + 11);
         width: $board-width;
-        gap: 1px;
+        // gap: 1px;
+        padding: 2px;
         border: $grid-border;
         background-color: $board-color;
         margin: 0 5rem;
@@ -98,18 +98,28 @@ $highlight-negative: rgb(189, 167, 167);
             background-color: $grid-color;
             position: relative;
             border: none;
-            & .hit-ic{
+            & .grid-ic{
                 position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
+            }
+            // & .grid-ic--pointer{
+            //     fill: $green;
+            // }
+            & .grid-ic--crosshair{
+                display: none;
+                width: calc($grid-size - 10px);
+                height: calc($grid-size - 10px);
+            }
+            & .grid-ic--fail{
+                fill: red;
                 width: calc($grid-size - 25px);
                 height: calc($grid-size - 25px);
             }
-            & .hit-ic--fail{
-                fill: red;
-            }
-            & .hit-ic--pass{
+            & .grid-ic--pass{
+                width: calc($grid-size - 25px);
+                height: calc($grid-size - 25px);
                 fill: $green;
                 z-index: 3;
             }
@@ -119,7 +129,6 @@ $highlight-negative: rgb(189, 167, 167);
             }
             & .game-ship{
                 margin: 0;
-                gap: 1px;
                 position: absolute;
                 top: 0px;
                 left: 0px;
@@ -143,8 +152,10 @@ $highlight-negative: rgb(189, 167, 167);
 .game[data-status='true']{
     & .opponent-board{
         & .game-board--grid{
-            &:hover{
-                background-color: $secondary-color;
+            &:hover .grid-ic--crosshair{
+                display: initial;
+                animation: flash 2s infinite;
+                // background-color: $secondary-color;
             }
         }
     }
