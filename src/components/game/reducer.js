@@ -32,9 +32,11 @@ export function reducer(state, action){
             return {...state, shipData:{...state.shipData, player: player_1_Data.getShipData()}};
         
         case ACTIONS.START_GAME:
-            
-            return state;
-
+            player_2_Data.generateBoard();
+            if(!player_1_Data.getIsAllShipPlaced()){
+                return state;
+            }
+            return {...state, isGameStarted: true}
         default:
             throw new Error();
     }

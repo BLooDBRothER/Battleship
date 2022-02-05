@@ -36,7 +36,7 @@ const toggleNegativeHighlightGrid = (toHighlight, row, column, shipLength, orien
   }
 }
 
-const Grid = ({ row, column, data }) => {
+const Grid = ({ row, column, data, isOwner }) => {
 
   const [toggleData, setToggleData] = useState(null);
   const [gameData, dispatch] = useContext(gameDataContext);
@@ -120,7 +120,7 @@ const Grid = ({ row, column, data }) => {
      onDrop={gameData.isGameStarted ? null : handleDrop} 
      onDragEnter={gameData.isGameStarted ? null : handleDragEnter} 
      onDragLeave={gameData.isGameStarted ? null : handleDragLeave}>
-     {ship && <Ship 
+     {ship && isOwner && <Ship 
                 shipLength={ship.shipData.length} 
                 shipName={ship.shipName} 
                 dispatch={dispatch} 

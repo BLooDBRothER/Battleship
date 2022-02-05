@@ -17,21 +17,23 @@ const Game = () => {
       player_1: player_1_Data.getShipData(),
       player_2: player_2_Data.getShipData(),
     },
-    isGameStarted: false,  
+    isGameStarted: true,  
   });
 
   useEffect(() => {
     console.log(gameData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return (
     
     <gameDataContext.Provider value={[gameData, dispatch]}>
-      <div className='game'>
-          <Menu />
+      <div className='game' data-status={gameData.isGameStarted}>
+          {!gameData.isGameStarted && <Menu />}
           <Board isOwner={true} />
-          <Ships />
+          {!gameData.isGameStarted && <Ships />}
+          {gameData.isGameStarted && <Board isOwner={false} />}
+
       </div>
     </gameDataContext.Provider>
   );

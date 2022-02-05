@@ -66,7 +66,7 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isD
             <div 
              className={`game-ship ship-${shipLength} ${isVertical && "vertical"}`} 
              draggable={isDraggable} 
-             onDragStart={handleDragStart} 
+             onDragStart={!isDraggable ? null :handleDragStart} 
              onDragEnd={!isDraggable ? null : handleDragEnd}
              onMouseDown={!isDraggable ? null : changeCursorGrabbing.bind(null, true)} 
              onMouseUp={!isDraggable ? null : changeCursorGrabbing.bind(null, false)}>

@@ -19,9 +19,14 @@ const Menu = () => {
     });
   }
 
+  const startGame = () => {
+    console.log("hel")
+    dispatch({type: ACTIONS.START_GAME});
+  }
+
   return (
       <div className='game-menu'>
-        <div className='game-menu--option'><GiSwordsEmblem className="game-menu--option-ic" />START GAME</div>
+        <div className='game-menu--option' onClick={startGame}><GiSwordsEmblem className="game-menu--option-ic" />START GAME</div>
         <div className='game-menu--option' onClick={generateRandomBoard}><FaRandom className="game-menu--option-ic" />RANDOMIZE ARRANGEMENT</div>
       </div>
   );

@@ -140,6 +140,16 @@ $highlight-negative: rgb(189, 167, 167);
     }
 }
 
+.game[data-status='true']{
+    & .opponent-board{
+        & .game-board--grid{
+            &:hover{
+                background-color: $secondary-color;
+            }
+        }
+    }
+}
+
 @keyframes flow {
     0%{
         background-image: linear-gradient(0deg, #f093fb 0%, #f5576c 100%);
