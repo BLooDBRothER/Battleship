@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaMapPin } from 'react-icons/fa';
 import { AiOutlineRotateRight } from 'react-icons/ai';
-import { ACTIONS, playerData } from './reducer';
+import { ACTIONS, player_1_Data } from './reducer';
 
 const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isDraggable=true}) => {
     const [isRotateVisible, setIsRotateVisible] = useState(false);
@@ -25,8 +25,8 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isD
             return;
         }
         setIsRotateVisible(false);
-        if(playerData.getShipData()[shipName]){
-            playerData.removeShip(shipName);
+        if(player_1_Data.getShipData()[shipName]){
+            player_1_Data.removeShip(shipName);
             setTimeout(() => {e.target.classList.add("none");}, 10);
         }
         e.currentTarget.parentElement.dataset.length = shipLength;
@@ -36,7 +36,7 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isD
     }
 
     const handleDragEnd = (e) => {
-        const ship = playerData.getShipData()[shipName];
+        const ship = player_1_Data.getShipData()[shipName];
         if(ship){
             dispatch({type: ACTIONS.ADD_SHIP, payload: {length: shipLength, orientation: ship.orientation, coordinate: ship.coordinate, shipName}});
         }
@@ -51,7 +51,7 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isD
     }
 
     const handleRotate = (e) => {
-        const ship = playerData.getShipData()[shipName];
+        const ship = player_1_Data.getShipData()[shipName];
         if(ship){
             const [toggleOrientation, currentOrientation] = isVertical ? ["horizontal", "vertical"] : ["vertical", "horizontal"];
             dispatch({type: ACTIONS.ROTATE_SHIP, payload: {length: shipLength, toggleOrientation, currentOrientation, coordinate: ship.coordinate, shipName}});

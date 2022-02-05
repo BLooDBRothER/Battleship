@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from 'react';
 import Menu from '../menu/Menu';
 import Board from './Board';
-import { playerData, reducer } from './reducer';
+import { player_1_Data, player_2_Data, reducer } from './reducer';
 import Ships from './Ships';
 
 
@@ -10,10 +10,12 @@ export const gameDataContext = React.createContext(null);
 const Game = () => {
   const [gameData, dispatch] = useReducer(reducer, {
     board: {
-      player: playerData.getGameBoard(),
+      player_1: player_1_Data.getGameBoard(),
+      player_2: player_2_Data.getGameBoard()
     },
     shipData:{
-      player: playerData.getShipData(),
+      player_1: player_1_Data.getShipData(),
+      player_2: player_2_Data.getShipData(),
     },
     isGameStarted: false,  
   });
@@ -28,7 +30,7 @@ const Game = () => {
     <gameDataContext.Provider value={[gameData, dispatch]}>
       <div className='game'>
           <Menu />
-          <Board />
+          <Board isOwner={true} />
           <Ships />
       </div>
     </gameDataContext.Provider>

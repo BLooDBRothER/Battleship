@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { FaSkullCrossbones } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
 import { gameDataContext } from './Game';
-import { ACTIONS, playerData } from './reducer';
+import { ACTIONS, player_1_Data } from './reducer';
 import Ship from './Ship';
 
 const togglePositiveHighlightGrid = (toHighlight, row, column, shipLength, orientation) => {
@@ -43,7 +43,7 @@ const Grid = ({ row, column, data }) => {
   const [ship, setShip] = useState(false);
 
   useEffect(() => {
-    const shipData = gameData.shipData.player;
+    const shipData = gameData.shipData.player_1;
     if(Object.keys(shipData).length !== 0){
       for(let shipName in shipData){
         const ship = shipData[shipName];
@@ -76,7 +76,7 @@ const Grid = ({ row, column, data }) => {
     const draggedElement = document.querySelector(".dragging");
     const length = +draggedElement.dataset.length;
     const orientation = draggedElement.dataset.orientation;
-    if(playerData.placeShip(length, orientation, [row, column])){
+    if(player_1_Data.placeShip(length, orientation, [row, column])){
       setTimeout(() => {
         setToggleData({isValidPlace: true, toEnable: true, length, orientation});
       }, 0);

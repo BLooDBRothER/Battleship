@@ -2,11 +2,12 @@ import React, { useContext} from 'react';
 import { gameDataContext } from './Game';
 import Grid from './Grid';
 
-const Board = () => {
+const Board = ({isOwner}) => {
   const gameData = useContext(gameDataContext)[0];
+  const board = isOwner ? gameData.board.player_1 : gameData.board.player_2;
   return (
       <div className="game-board">
-        {gameData.board.player.map((row, rowIdx) => {
+        {board.map((row, rowIdx) => {
           return row.map((grid, gridIdx) => {
             return <Grid key={`${rowIdx}+${gridIdx}`} row={rowIdx} column={gridIdx} data={grid} />
           })
