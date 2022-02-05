@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
+import { FaSkullCrossbones } from 'react-icons/fa';
+import { GiCrossMark } from 'react-icons/gi';
 import { gameDataContext } from './Game';
 import { ACTIONS, playerData } from './reducer';
 import Ship from './Ship';
@@ -68,7 +70,7 @@ const Grid = ({ row, column, data }) => {
   useLayoutEffect(handleHighlightGrid, [toggleData]);
 
   //Evnet Listener
-  const handleDragEnter = (e) => {
+  let handleDragEnter = (e) => {
     const isOverLapping = document.querySelector(`#grid-${row}-${column} .ship-container`);
     if(isOverLapping && !isOverLapping.classList.contains("dragging")) return;
     const draggedElement = document.querySelector(".dragging");
@@ -86,15 +88,15 @@ const Grid = ({ row, column, data }) => {
     }
   }
 
-  const handleDragLeave = (e) => {
+  let handleDragLeave = (e) => {
     setToggleData(prev => ({...prev, toEnable:false}))
   }
 
-  const handleDragOver = (e) => {
+  let handleDragOver = (e) => {
     e.preventDefault();
   }
 
-  const handleDrop = (e) => {
+  let handleDrop = (e) => {
     e.preventDefault();
     const draggedElement = document.querySelector(".dragging");
     const length = +draggedElement.dataset.length;
@@ -114,15 +116,18 @@ const Grid = ({ row, column, data }) => {
     <div 
      id={`grid-${row}-${column}`}
      className='game-board--grid' 
-     onDragOver={handleDragOver} 
-     onDrop={handleDrop} 
-     onDragEnter={handleDragEnter} 
-     onDragLeave={handleDragLeave}>
+     onDragOver={gameData.isGameStarted ? null : handleDragOver} 
+     onDrop={gameData.isGameStarted ? null : handleDrop} 
+     onDragEnter={gameData.isGameStarted ? null : handleDragEnter} 
+     onDragLeave={gameData.isGameStarted ? null : handleDragLeave}>
      {ship && <Ship 
                 shipLength={ship.shipData.length} 
                 shipName={ship.shipName} 
                 dispatch={dispatch} 
-                orientationIsVertical={ship.shipData.orientation === "vertical" ? true: false} /> }
+                orientationIsVertical={ship.shipData.orientation === "vertical" ? true: false}
+                isDraggable={!gameData.isGameStarted} /> }
+    {/* <GiCrossMark className='hit-ic hit-ic--fail' /> */}
+    {/* <FaSkullCrossbones className='hit-ic hit-ic--pass' /> */}
     </div>
     )
 };

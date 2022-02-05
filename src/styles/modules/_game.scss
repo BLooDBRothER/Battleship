@@ -18,7 +18,6 @@ $highlight-negative: rgb(189, 167, 167);
             cursor: pointer;
             &:hover{
                 background-color: #4158D0;
-                // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
                 background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
                 
                 color: $secondary-color;
@@ -26,7 +25,7 @@ $highlight-negative: rgb(189, 167, 167);
                 text-fill-color: transparent;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
-                // animation: beat 1s ease-in-out infinite;
+                animation: flow 1s linear infinite;
             }
             &-ic{
                 margin-right: .5rem;
@@ -99,6 +98,21 @@ $highlight-negative: rgb(189, 167, 167);
             background-color: $grid-color;
             position: relative;
             border: none;
+            & .hit-ic{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: calc($grid-size - 25px);
+                height: calc($grid-size - 25px);
+            }
+            & .hit-ic--fail{
+                fill: red;
+            }
+            & .hit-ic--pass{
+                fill: $green;
+                z-index: 3;
+            }
             & .ship-container{
                 margin: 0rem;
                 padding: 0rem;
@@ -126,12 +140,25 @@ $highlight-negative: rgb(189, 167, 167);
     }
 }
 
-@keyframes beat {
+@keyframes flow {
     0%{
-        transform: scale(0.8);
+        background-image: linear-gradient(0deg, #f093fb 0%, #f5576c 100%);
+
+    }
+
+    25%{
+        background-image: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
     }
     
+    50%{
+        background-image: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    75%{
+        background-image: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+    }
+
     100%{
-        transform: scale(0.8);
+        background-image: linear-gradient(0deg, #f093fb 0%, #f5576c 100%);
     }
 }

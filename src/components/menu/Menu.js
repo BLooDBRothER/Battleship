@@ -9,9 +9,14 @@ const Menu = () => {
 
   const generateRandomBoard = () => {
     dispatch({type: ACTIONS.GENERATE_BOARD});
-    const shipContainer = document.querySelector(".game-ships");
     const shipGroups = document.querySelectorAll(".game-ships--group");
-    shipGroups.forEach(shipElement => shipContainer.removeChild(shipElement));
+    let time = 0;
+    shipGroups.forEach(shipElement => {
+      setTimeout(() => {
+        shipElement.className += "animate_animated animate__bounceOut"
+      }, time);
+      time += 70;
+    });
   }
 
   return (

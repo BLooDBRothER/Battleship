@@ -22,8 +22,12 @@ const ShipGroup = ({ totalShips, shipLength, shipName }) => {
       return ship;
   }
 
+  const removeElement = (e) => {
+    e.target.parentElement.removeChild(e.target);
+  }
+
   return (
-      <div className={`game-ships--group game-ship--${shipName}`}>
+      <div className={`game-ships--group game-ship--${shipName}`} onAnimationEnd={removeElement}>
           {returnShip()}
       </div>
   );

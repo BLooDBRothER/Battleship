@@ -3,7 +3,7 @@ import { FaMapPin } from 'react-icons/fa';
 import { AiOutlineRotateRight } from 'react-icons/ai';
 import { ACTIONS, playerData } from './reducer';
 
-const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false}) => {
+const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isDraggable=true}) => {
     const [isRotateVisible, setIsRotateVisible] = useState(false);
     const [isVertical, setIsVertical] = useState(false);
     useEffect(() => {
@@ -20,6 +20,10 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false}) =>
 
     //Event Listener
     const handleDragStart = (e) => {
+        if(!isDraggable){
+            e.prevetDefault();
+            return;
+        }
         setIsRotateVisible(false);
         if(playerData.getShipData()[shipName]){
             playerData.removeShip(shipName);
@@ -58,8 +62,14 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false}) =>
     }
     return (
         <div className={`ship-container`} onMouseEnter={() => {setIsRotateVisible(true)}} onMouseLeave={() => {setIsRotateVisible(false)}}>
-            {isRotateVisible && <AiOutlineRotateRight className='game-ship--rotate' onClick={handleRotate} />}
-            <div className={`game-ship ship-${shipLength} ${isVertical && "vertical"}`} draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd} onMouseDown={changeCursorGrabbing.bind(null, true)} onMouseUp={changeCursorGrabbing.bind(null, false)}>
+            {(isRotateVisible && isDraggable) && <AiOutlineRotateRight className='game-ship--rotate' onClick={handleRotate} />}
+            <div 
+             className={`game-ship ship-${shipLength} ${isVertical && "vertical"}`} 
+             draggable={isDraggable} 
+             onDragStart={handleDragStart} 
+             onDragEnd={!isDraggable ? null : handleDragEnd}
+             onMouseDown={!isDraggable ? null : changeCursorGrabbing.bind(null, true)} 
+             onMouseUp={!isDraggable ? null : changeCursorGrabbing.bind(null, false)}>
                 {returnShipPart()}
             </div>
         </div>
