@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext, useLayoutEffect } from 'react';
 import { FaSkullCrossbones } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
@@ -5,8 +6,9 @@ import { BiCrosshair } from 'react-icons/bi';
 import { VscDebugBreakpointLog } from 'react-icons/vsc';
 import { BsShieldFillX } from 'react-icons/bs';
 import { gameDataContext } from './Game';
-import { ACTIONS, player_1_Data } from './reducer';
+import { ACTIONS,  } from './reducer';
 import Ship from './Ship';
+import { players } from '../../game_logic/Players';
 
 const togglePositiveHighlightGrid = (toHighlight, row, column, shipLength, orientation) => {
   if(orientation === "horizontal"){
@@ -39,29 +41,26 @@ const toggleNegativeHighlightGrid = (toHighlight, row, column, shipLength, orien
   }
 }
 
-const Grid = ({ row, column, data, isOwner }) => {
+const Grid = ({ row, column, data }) => {
 
   const [toggleData, setToggleData] = useState(null);
   const [gameData, dispatch] = useContext(gameDataContext);
   const [ship, setShip] = useState(false);
 
   useEffect(() => {
-    const shipData = isOwner ? gameData.shipData.player_1 : gameData.shipData.player_2;
-    if(Object.keys(shipData).length !== 0){
-      for(let shipName in shipData){
-        const ship = shipData[shipName];
-        const [shipRow, shipCol] = ship.coordinate;
-        if(shipRow === row && shipCol === column){
-          setShip({shipName, shipData: ship});
-          return;
-        }
-        else{
-          setShip(false);
-        }
-      }
+    const shipData = data.ship;
+    if(!data.ship) {
+      setShip(false);
+      return;
+    };
+    const [shipRow, shipCol] = shipData.coordinate;
+    if(shipRow === row && shipCol === column){
+      setShip({...shipData});
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameData]);
+    else{
+      setShip(false);
+    }
+  }, [data]);
 
   const handleHighlightGrid = () => {
     if(toggleData === null) return;
@@ -79,7 +78,7 @@ const Grid = ({ row, column, data, isOwner }) => {
     const draggedElement = document.querySelector(".dragging");
     const length = +draggedElement.dataset.length;
     const orientation = draggedElement.dataset.orientation;
-    if(player_1_Data.placeShip(length, orientation, [row, column])){
+    if(players.player_1.placeShip(length, orientation, [row, column])){
       setTimeout(() => {
         setToggleData({isValidPlace: true, toEnable: true, length, orientation});
       }, 0);
@@ -116,10 +115,6 @@ const Grid = ({ row, column, data, isOwner }) => {
     setToggleData(prev => ({...prev, toEnable:false}))
   }
 
-  const attack = (e) => {
-    dispatch({type: ACTIONS.ATTACK, payload: {row, column}});
-  }
-
   return (
     <div 
      id={`grid-${row}-${column}`}
@@ -128,15 +123,14 @@ const Grid = ({ row, column, data, isOwner }) => {
      onDrop={gameData.isGameStarted ? null : handleDrop} 
      onDragEnter={gameData.isGameStarted ? null : handleDragEnter} 
      onDragLeave={gameData.isGameStarted ? null : handleDragLeave}
-     onClick = {isOwner ? null : attack}
      >
       {!data.isHit && <VscDebugBreakpointLog className='grid-ic grid-ic--pointer' />}
       {!data.isHit && <BiCrosshair className='grid-ic grid-ic--crosshair' />}
-      {ship && isOwner  && <Ship 
-                  shipLength={ship.shipData.length} 
-                  shipName={ship.shipName} 
+      {ship  && <Ship 
+                  shipLength={ship.length} 
+                  shipName={ship.name} 
                   dispatch={dispatch} 
-                  orientationIsVertical={ship.shipData.orientation === "vertical" ? true: false}
+                  orientationIsVertical={ship.orientation === "vertical" ? true: false}
                   isDraggable={!gameData.isGameStarted} /> }
       {data.isHit && data.ship && <FaSkullCrossbones className='grid-ic grid-ic--pass' />}
       {data.isHit && !data.ship && !data.isSurroundHit && <GiCrossMark className='grid-ic grid-ic--fail faded' />}

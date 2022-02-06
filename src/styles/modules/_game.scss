@@ -38,6 +38,7 @@ $highlight-negative: rgb(189, 167, 167);
         margin: .5rem;
         padding: .2rem;
         & .game-ship--rotate{
+            background-color: $primary-color;
             width: 30px;
             height: 30px;
             position: absolute;
@@ -90,12 +91,10 @@ $highlight-negative: rgb(189, 167, 167);
         // gap: 1px;
         padding: 2px;
         border: $grid-border;
-        background-color: $board-color;
         margin: 0 5rem;
         &--grid{
             width: $grid-size;
             height: $grid-size;
-            background-color: $grid-color;
             position: relative;
             border: none;
             & .grid-ic{
@@ -104,9 +103,9 @@ $highlight-negative: rgb(189, 167, 167);
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
-            // & .grid-ic--pointer{
-            //     fill: $green;
-            // }
+            & .grid-ic--pointer{
+                z-index: -1;
+            }
             & .grid-ic--fail, & .grid-ic--shield, & .grid-ic--pass{
                 width: calc($grid-size - 25px);
                 height: calc($grid-size - 25px);

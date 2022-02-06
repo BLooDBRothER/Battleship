@@ -13,7 +13,7 @@ const Menu = () => {
     let time = 0;
     shipGroups.forEach(shipElement => {
       setTimeout(() => {
-        shipElement.className += "animate_animated animate__bounceOut"
+        shipElement.classList.add("animate_animated", "animate__bounceOut");
       }, time);
       time += 70;
     });
