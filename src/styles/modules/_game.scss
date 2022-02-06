@@ -107,19 +107,22 @@ $highlight-negative: rgb(189, 167, 167);
             // & .grid-ic--pointer{
             //     fill: $green;
             // }
+            & .grid-ic--fail, & .grid-ic--shield, & .grid-ic--pass{
+                width: calc($grid-size - 25px);
+                height: calc($grid-size - 25px);
+            }
             & .grid-ic--crosshair{
-                display: none;
                 width: calc($grid-size - 10px);
                 height: calc($grid-size - 10px);
+                display: none;
             }
             & .grid-ic--fail{
                 fill: red;
-                width: calc($grid-size - 25px);
-                height: calc($grid-size - 25px);
+            }
+            & .grid-ic--shield{
+                fill: $blue;
             }
             & .grid-ic--pass{
-                width: calc($grid-size - 25px);
-                height: calc($grid-size - 25px);
                 fill: $green;
                 z-index: 3;
             }

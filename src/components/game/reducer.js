@@ -8,13 +8,14 @@ export const ACTIONS = {
     ROTATE_SHIP: "rotate_ship",
     GENERATE_BOARD: "generate_board",
     START_GAME: "start_game",
+    ATTACK: "attack",
 }
 
 export function reducer(state, action){
     switch(action.type){
         case ACTIONS.ADD_SHIP:
             player_1_Data.assignShipCoordinates(action.payload.length, action.payload.orientation, action.payload.coordinate, action.payload.shipName);
-            return {...state, shipData:{...state.shipData, player: player_1_Data.getShipData()}};
+            return {...state, board: {...state.board, player_1: player_1_Data.getGameBoard()}, shipData:{...state.shipData, player: player_1_Data.getShipData()}};
         
         case ACTIONS.ROTATE_SHIP:
             player_1_Data.removeShip(action.payload.shipName);
@@ -25,18 +26,23 @@ export function reducer(state, action){
             else{
                 player_1_Data.assignShipCoordinates(action.payload.length, action.payload.toggleOrientation, action.payload.coordinate, action.payload.shipName);
             }
-            return {...state, shipData:{...state.shipData, player: player_1_Data.getShipData()}};
+            return {...state, board: {...state.board, player_1: player_1_Data.getGameBoard()}, shipData:{...state.shipData, player: player_1_Data.getShipData()}};
 
         case ACTIONS.GENERATE_BOARD:
             player_1_Data.generateBoard();
-            return {...state, shipData:{...state.shipData, player: player_1_Data.getShipData()}};
+            return {...state, board: {...state.board, player_1: player_1_Data.getGameBoard()}, shipData:{...state.shipData, player: player_1_Data.getShipData()}};
         
         case ACTIONS.START_GAME:
             player_2_Data.generateBoard();
             if(!player_1_Data.getIsAllShipPlaced()){
                 return state;
             }
-            return {...state, isGameStarted: true}
+            return {...state, board: {...state.board, player_2: player_2_Data.getGameBoard()}, isGameStarted: true}
+
+        case ACTIONS.ATTACK: 
+            player_2_Data.attack(action.payload.row, action.payload.column);
+            // console.log(player_2_Data.getGameBoard([action.payload.row, action.payload.column]));
+            return {...state, board: {...state.board, player_2: player_2_Data.getGameBoard()}};
         default:
             throw new Error();
     }

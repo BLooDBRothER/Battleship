@@ -8,6 +8,7 @@ import Ships from './Ships';
 export const gameDataContext = React.createContext(null);
 
 const Game = () => {
+  const player_1_board = player_1_Data.getGameBoard();
   const [gameData, dispatch] = useReducer(reducer, {
     board: {
       player_1: player_1_Data.getGameBoard(),
@@ -23,7 +24,7 @@ const Game = () => {
   useEffect(() => {
     console.log(gameData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  });
+  }, [gameData.board]);
 
   return (
     

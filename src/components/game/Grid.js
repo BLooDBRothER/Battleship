@@ -3,6 +3,7 @@ import { FaSkullCrossbones } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
 import { BiCrosshair } from 'react-icons/bi';
 import { VscDebugBreakpointLog } from 'react-icons/vsc';
+import { BsShieldFillX } from 'react-icons/bs';
 import { gameDataContext } from './Game';
 import { ACTIONS, player_1_Data } from './reducer';
 import Ship from './Ship';
@@ -45,7 +46,7 @@ const Grid = ({ row, column, data, isOwner }) => {
   const [ship, setShip] = useState(false);
 
   useEffect(() => {
-    const shipData = gameData.shipData.player_1;
+    const shipData = isOwner ? gameData.shipData.player_1 : gameData.shipData.player_2;
     if(Object.keys(shipData).length !== 0){
       for(let shipName in shipData){
         const ship = shipData[shipName];
@@ -72,7 +73,7 @@ const Grid = ({ row, column, data, isOwner }) => {
   useLayoutEffect(handleHighlightGrid, [toggleData]);
 
   //Evnet Listener
-  let handleDragEnter = (e) => {
+  const handleDragEnter = (e) => {
     const isOverLapping = document.querySelector(`#grid-${row}-${column} .ship-container`);
     if(isOverLapping && !isOverLapping.classList.contains("dragging")) return;
     const draggedElement = document.querySelector(".dragging");
@@ -90,15 +91,15 @@ const Grid = ({ row, column, data, isOwner }) => {
     }
   }
 
-  let handleDragLeave = (e) => {
+  const handleDragLeave = (e) => {
     setToggleData(prev => ({...prev, toEnable:false}))
   }
 
-  let handleDragOver = (e) => {
+  const handleDragOver = (e) => {
     e.preventDefault();
   }
 
-  let handleDrop = (e) => {
+  const handleDrop = (e) => {
     e.preventDefault();
     const draggedElement = document.querySelector(".dragging");
     const length = +draggedElement.dataset.length;
@@ -114,6 +115,11 @@ const Grid = ({ row, column, data, isOwner }) => {
     }
     setToggleData(prev => ({...prev, toEnable:false}))
   }
+
+  const attack = (e) => {
+    dispatch({type: ACTIONS.ATTACK, payload: {row, column}});
+  }
+
   return (
     <div 
      id={`grid-${row}-${column}`}
@@ -121,17 +127,20 @@ const Grid = ({ row, column, data, isOwner }) => {
      onDragOver={gameData.isGameStarted ? null : handleDragOver} 
      onDrop={gameData.isGameStarted ? null : handleDrop} 
      onDragEnter={gameData.isGameStarted ? null : handleDragEnter} 
-     onDragLeave={gameData.isGameStarted ? null : handleDragLeave}>
-     <VscDebugBreakpointLog className='grid-ic grid-ic--pointer' />
-     <BiCrosshair className='grid-ic grid-ic--crosshair' />
-     {ship && isOwner && <Ship 
-                shipLength={ship.shipData.length} 
-                shipName={ship.shipName} 
-                dispatch={dispatch} 
-                orientationIsVertical={ship.shipData.orientation === "vertical" ? true: false}
-                isDraggable={!gameData.isGameStarted} /> }
-    {/* <GiCrossMark className='grid-ic grid-ic--fail' /> */}
-    {/* <FaSkullCrossbones className='grid-ic grid-ic--pass' /> */}
+     onDragLeave={gameData.isGameStarted ? null : handleDragLeave}
+     onClick = {isOwner ? null : attack}
+     >
+      {!data.isHit && <VscDebugBreakpointLog className='grid-ic grid-ic--pointer' />}
+      {!data.isHit && <BiCrosshair className='grid-ic grid-ic--crosshair' />}
+      {ship && isOwner  && <Ship 
+                  shipLength={ship.shipData.length} 
+                  shipName={ship.shipName} 
+                  dispatch={dispatch} 
+                  orientationIsVertical={ship.shipData.orientation === "vertical" ? true: false}
+                  isDraggable={!gameData.isGameStarted} /> }
+      {data.isHit && data.ship && <FaSkullCrossbones className='grid-ic grid-ic--pass' />}
+      {data.isHit && !data.ship && !data.isSurroundHit && <GiCrossMark className='grid-ic grid-ic--fail faded' />}
+      {data.isHit && !data.ship && data.isSurroundHit && <BsShieldFillX className='grid-ic grid-ic--shield' />}
     </div>
     )
 };
