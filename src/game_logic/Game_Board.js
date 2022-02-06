@@ -183,7 +183,6 @@ export const Game_Board = () => {
     const attack = (row, column) => {
         const attackData = {};
         const gridData = getGridData([row, column]);
-        if(gridData.isHit) return;
         if(gridData.ship){
             if(gridData.ship.hit()){
                 closeSurround(gridData.ship, attackData);
@@ -193,7 +192,7 @@ export const Game_Board = () => {
         }
         attackData[`${row}${column}`] = gridData.ship ? 'shipHit' : 'missHit';
         gameBoard[row][column] = {...gridData, isHit:true};
-        return attackData;
+        return [attackData, gridData.ship ? true : false];
     }
     
     const attackSurround = (row, column, surroundCoordinatesIndex, index, attackData) => {

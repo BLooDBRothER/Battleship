@@ -41,7 +41,7 @@ export function reducer(state, action){
             return {...state, isGameStarted: true}
 
         case ACTIONS.ATTACK: 
-            const hitData = players.player_2.attack(action.payload.row, action.payload.column);
+            const hitData = players.player_2.attack(action.payload.row, action.payload.column)[0];  
             return {...state, hitData: {...state.hitData, ...hitData}};
         default:
             throw new Error();

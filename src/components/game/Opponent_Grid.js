@@ -13,10 +13,6 @@ const OpponentGrid = ({ row, column }) => {
   const [hitType, setHitType] = useState("");
 
   useEffect(() => {
-    console.log(hitType);
-  }, [hitType]);
-
-  useEffect(() => {
     const type = gameData.hitData[`${row}${column}`];
     if(!type) return;
     setHitType(type);
@@ -31,7 +27,7 @@ const OpponentGrid = ({ row, column }) => {
     <div 
      id={`grid-${row}-${column}`}
      className='game-board--grid' 
-     onClick = {attack}
+     onClick = {hitType === "" ? attack : null}
      >
       {hitType === "" && <VscDebugBreakpointLog className='grid-ic grid-ic--pointer' />}
       {hitType === "" && <BiCrosshair className='grid-ic grid-ic--crosshair' />}

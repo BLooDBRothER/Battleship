@@ -53,6 +53,7 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isD
 
     const handleRotate = (e) => {
         const ship = players.player_1.getShipData()[shipName];
+        console.log(ship);
         if(ship){
             const [toggleOrientation, currentOrientation] = isVertical ? ["horizontal", "vertical"] : ["vertical", "horizontal"];
             dispatch({type: ACTIONS.ROTATE_SHIP, payload: {length: shipLength, toggleOrientation, currentOrientation, coordinate: ship.coordinate, shipName}});

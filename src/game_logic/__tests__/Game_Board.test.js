@@ -107,13 +107,13 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
 
     it("Missed Attack ship", () => {
         const missedGridData = JSON.stringify({isHit: true, isSurroundHit:false, ship:null});
-        const expectData = {'00': 'missHit'};
+        const expectData = [{'00': 'missHit'}, false];
         expect(gameBoard.attack(0, 0)).toEqual(expectData);
         expect(JSON.stringify(gameBoard.getGridData([0,0]))).toEqual(missedGridData);
     });
 
     it("Hit Attack Ship", () => {
-        const expectData = {'75':'shipHit', '64': 'surroundHit', '66': 'surroundHit', '84': 'surroundHit', '86':'surroundHit'};
+        const expectData = [{'75':'shipHit', '64': 'surroundHit', '66': 'surroundHit', '84': 'surroundHit', '86':'surroundHit'}, true];
         const hitGridData = JSON.stringify({isHit: true, isSurroundHit:false, ship: Ship(2, "vertical", [7,5], "submarine_1")});
         expect(gameBoard.attack(7, 5)).toEqual(expectData);
         expect(JSON.stringify(gameBoard.getGridData([7,5]))).toEqual(hitGridData);

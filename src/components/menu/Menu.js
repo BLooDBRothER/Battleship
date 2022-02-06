@@ -20,7 +20,6 @@ const Menu = () => {
   }
 
   const startGame = () => {
-    console.log("hel")
     dispatch({type: ACTIONS.START_GAME});
   }
 
