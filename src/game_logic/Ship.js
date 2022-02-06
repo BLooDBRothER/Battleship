@@ -10,5 +10,5 @@ export const Ship = (length, orientation, [...coordinate]) => {
         return !life;
     }
 
-    return {hit, length, orientation, coordinate};
+    return {hit, isSunk, length, orientation, coordinate};
 }

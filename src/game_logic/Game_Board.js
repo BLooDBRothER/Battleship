@@ -162,30 +162,31 @@ export const Game_Board = () => {
         return false;
     }
 
-    const placeShipRandomly = (shipList) => {
-        if(shipList.length === 0) return;
+    const placeShipRandomly = (shipList, index) => {
+        if(shipList.length === index) return;
         let isShipPlaced = false;
         while(!isShipPlaced){
             const coordinate = [Math.floor(Math.random() * (10)), Math.floor(Math.random() * 10)];
             const orientation = Math.floor(Math.random() * 1000) % 2 ? "horizontal" : "vertical";
-            isShipPlaced = assignShipCoordinates(shipList[0].length, orientation, coordinate, shipList[0].shipName);
+            isShipPlaced = assignShipCoordinates(shipList[index].length, orientation, coordinate, shipList[index].shipName);
         }
-        shipList = shipList.filter((ship, idx) => idx !== 0);
-        placeShipRandomly(shipList);
+        placeShipRandomly(shipList, ++index);
     }
 
     const generateBoard = () => {
         for(let shipName in shipData){
             removeShip(shipName);
         }
-        placeShipRandomly(shipList);
-        return true;
+        placeShipRandomly(shipList, 0);
     }
 
     const attack = (row, column) => {
         const gridData = getGridData([row, column]);
         if(gridData.isHit) return;
         if(gridData.ship){
+            if(gridData.ship.hit()){
+                closeSurround(gridData.ship);
+            }
             const surroundCoordinatesIndex = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
             attackSurround(row, column, surroundCoordinatesIndex, 0);
         }
@@ -195,9 +196,45 @@ export const Game_Board = () => {
     const attackSurround = (row, column, surroundCoordinatesIndex, index) => {
         if(index === 4) return;
         const surroundCoordinate = [(row + surroundCoordinatesIndex[index][0]), (column + surroundCoordinatesIndex[index][1])];
-        const gridData = getGridData(surroundCoordinate);
-        gameBoard[surroundCoordinate[0]][surroundCoordinate[1]] = {...gridData, isHit: true, isSurroundHit: true};
+        if(isValidCoordinate(surroundCoordinate[0], surroundCoordinate[1])){
+            const gridData = getGridData(surroundCoordinate);
+            if(!gridData.isHit)
+                gameBoard[surroundCoordinate[0]][surroundCoordinate[1]] = {...gridData, isHit: true, isSurroundHit: true};
+        }
         attackSurround(row, column, surroundCoordinatesIndex, ++index);
+    }
+
+    const closeSurround = (ship) => {
+        if(ship.length === 1){
+            closeSurroundSingleShip(ship.coordinate);
+            return;
+        }
+        const [row, column] = ship.coordinate;
+        const [start, end] = ship.orientation === "horizontal" 
+                                ? [[row, column-1], [row, column+ship.length]] 
+                                : [[row-1, column], [row+ship.length, column]];
+        if(isValidCoordinate(start[0], start[1])){
+            const gridData = getGridData(start);
+            if(!gridData.isHit)
+                gameBoard[start[0]][start[1]] = {...gridData, isHit: true, isSurroundHit: true};
+        }
+        if(isValidCoordinate(end[0], end[1])){
+            const gridData = getGridData(end);
+            if(!gridData.isHit)
+                gameBoard[end[0]][end[1]] = {...gridData, isHit: true, isSurroundHit: true};
+        }
+    }
+
+    const closeSurroundSingleShip = ([row, column]) => {
+        const surroundIndex = [[row+1, column], [row-1, column], [row, column+1], [row, column-1]];
+        surroundIndex.forEach(index => {
+            if(isValidCoordinate(index[0], index[1])){
+                const gridData = getGridData(index);
+                if(!gridData.isHit)
+                    gameBoard[index[0]][index[1]] = {...gridData, isHit: true, isSurroundHit: true};
+            }
+        });
+
     }
 
     return {getGameBoard, getGridData, getShipData, placeShip, assignShipCoordinates, removeShip, generateBoard, getIsAllShipPlaced, attack};

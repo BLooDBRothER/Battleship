@@ -123,7 +123,52 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
         expect(JSON.stringify(gameBoard.getGridData([6,6]))).toEqual(surroundGridData);
         expect(JSON.stringify(gameBoard.getGridData([8,4]))).toEqual(surroundGridData);
         expect(JSON.stringify(gameBoard.getGridData([8,6]))).toEqual(surroundGridData);
-    })
+    });
+
+    it("check surround close horizontal", () => {
+        // Attack
+        expect(gameBoard.assignShipCoordinates(3, "horizontal", [0,5], "cruiser_0")).toBeTruthy();
+        const gridData = gameBoard.getShipData().cruiser_0;
+        gameBoard.attack(0, 5);
+        expect(gridData.isSunk()).toBeFalsy();
+        gameBoard.attack(0, 6);
+        expect(gridData.isSunk()).toBeFalsy();
+        gameBoard.attack(0, 7);
+        expect(gridData.isSunk()).toBeTruthy();
+
+        // Surround close
+        const surroundGridData = JSON.stringify({isHit: true, isSurroundHit:true, ship:null});
+        expect(JSON.stringify(gameBoard.getGridData([0,4]))).toEqual(surroundGridData);
+        expect(JSON.stringify(gameBoard.getGridData([0,8]))).toEqual(surroundGridData);
+    });
+
+    it("check surround close vertical", () => {
+        // Attack
+        expect(gameBoard.assignShipCoordinates(3, "vertical", [7,0], "cruiser_1")).toBeTruthy();
+        const gridData = gameBoard.getShipData().cruiser_1;
+        gameBoard.attack(7, 0);
+        expect(gridData.isSunk()).toBeFalsy();
+        gameBoard.attack(8, 0);
+        expect(gridData.isSunk()).toBeFalsy();
+        gameBoard.attack(9, 0);
+        expect(gridData.isSunk()).toBeTruthy();
+
+        // Surround close
+        const surroundGridData = JSON.stringify({isHit: true, isSurroundHit:true, ship:null});
+        expect(JSON.stringify(gameBoard.getGridData([6,0]))).toEqual(surroundGridData);
+    });
+    it("check surround close single", () => {
+        // Attack
+        expect(gameBoard.assignShipCoordinates(1, "vertical", [9,9], "boat_0")).toBeTruthy();
+        const gridData = gameBoard.getShipData().boat_0;
+        gameBoard.attack(9, 9);
+        expect(gridData.isSunk()).toBeTruthy();
+
+        // Surround close
+        const surroundGridData = JSON.stringify({isHit: true, isSurroundHit:true, ship:null});
+        expect(JSON.stringify(gameBoard.getGridData([8, 9]))).toEqual(surroundGridData);
+        expect(JSON.stringify(gameBoard.getGridData([9, 8]))).toEqual(surroundGridData);
+    });
 });
 
 describe("Check random generation", () => {
@@ -132,7 +177,7 @@ describe("Check random generation", () => {
         gameBoard = Game_Board();
     });
     it("Gnereate board i.e random ship placement", () => {
-        expect(gameBoard.generateBoard()).toBeTruthy();
+        gameBoard.generateBoard();
         expect(gameBoard.getIsAllShipPlaced()).toBeTruthy();
     });
 })
