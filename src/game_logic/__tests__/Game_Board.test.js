@@ -47,7 +47,7 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
     });
 
     it("Check ship placement if Neighbour present horizontal", () => {
-        const gridData = JSON.stringify({isHit: false, isSurroundHit:false, ship: Ship(2, "horizontal", [3,4])});
+        const gridData = JSON.stringify({isHit: false, isSurroundHit:false, ship: Ship(2, "horizontal", [3,4], "submarine_0")});
 
         expect(gameBoard.assignShipCoordinates(2, "horizontal", [3,4], "submarine_0")).toBeTruthy();
         
@@ -69,7 +69,7 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
         expect(gameBoard.assignShipCoordinates(2, "horizontal", [4,6], "submarnie_2")).toBeFalsy();
     });
     it("Check ship placement if Neighbour present vertical", () => {
-        const gridData = JSON.stringify({isHit: false, isSurroundHit:false, ship: Ship(2, "vertical", [7,5])});
+        const gridData = JSON.stringify({isHit: false, isSurroundHit:false, ship: Ship(2, "vertical", [7,5], "submarine_1")});
 
         expect(gameBoard.assignShipCoordinates(2, "vertical", [7,5], "submarine_1")).toBeTruthy();
         expect(gameBoard.getIsAllShipPlaced()).toBeFalsy();
@@ -107,13 +107,15 @@ describe("Tests for game board i.e ship placement, grid attack", () => {
 
     it("Missed Attack ship", () => {
         const missedGridData = JSON.stringify({isHit: true, isSurroundHit:false, ship:null});
-        gameBoard.attack(0, 0);
+        const expectData = {'00': 'missHit'};
+        expect(gameBoard.attack(0, 0)).toEqual(expectData);
         expect(JSON.stringify(gameBoard.getGridData([0,0]))).toEqual(missedGridData);
     });
 
     it("Hit Attack Ship", () => {
-        const hitGridData = JSON.stringify({isHit: true, isSurroundHit:false, ship: Ship(2, "vertical", [7,5])});
-        gameBoard.attack(7, 5);
+        const expectData = {'75':'shipHit', '64': 'surroundHit', '66': 'surroundHit', '84': 'surroundHit', '86':'surroundHit'};
+        const hitGridData = JSON.stringify({isHit: true, isSurroundHit:false, ship: Ship(2, "vertical", [7,5], "submarine_1")});
+        expect(gameBoard.attack(7, 5)).toEqual(expectData);
         expect(JSON.stringify(gameBoard.getGridData([7,5]))).toEqual(hitGridData);
     });
 

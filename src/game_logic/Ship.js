@@ -1,4 +1,4 @@
-export const Ship = (length, orientation, [...coordinate]) => {
+export const Ship = (length, orientation, [...coordinate], name) => {
     let life = length;
 
     const hit = () => {
@@ -10,5 +10,5 @@ export const Ship = (length, orientation, [...coordinate]) => {
         return !life;
     }
 
-    return {hit, isSunk, length, orientation, coordinate};
+    return {hit, isSunk, length, orientation, coordinate, name};
 }
