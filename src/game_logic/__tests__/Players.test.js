@@ -3,9 +3,9 @@ import { players } from "../Players";
 describe("player logic", () => {
 
     beforeAll(() => {
+        players.player_2.generateBoard();
         const recursiveAttack = () => {
             const remainingMoves = players.computerAttack();
-            players.player_2.generateBoard();
             if(remainingMoves === 0){
                 return;
             }

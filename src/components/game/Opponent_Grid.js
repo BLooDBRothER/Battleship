@@ -21,6 +21,8 @@ const OpponentGrid = ({ row, column }) => {
   }, [gameData.hitData]);
 
   const attack = (e) => {
+    console.log(gameData.currentPlayer);
+    if(gameData.currentPlayer !== 'player_1') return;
     dispatch({type: ACTIONS.ATTACK, payload: {row, column}});
   }
 

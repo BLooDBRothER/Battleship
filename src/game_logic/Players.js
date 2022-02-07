@@ -36,6 +36,7 @@ export const Players = () => {
         for(let coordinate in hitData){
             possibleMoves = possibleMoves.filter(moves => moves !== coordinate);
         }
+        return possibleMoves.length;
     }
 
     return {player_1, player_2, getCurrentPlayer, changeTurn, computerAttack};

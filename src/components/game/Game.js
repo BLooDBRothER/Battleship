@@ -1,11 +1,10 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { players } from '../../game_logic/Players';
 import Menu from '../menu/Menu';
 import OpponentBoard from './OpponentBoard';
 import PlayerBoard from './PlayerBoard';
 import { ACTIONS, reducer } from './reducer';
 import Ships from './Ships';
-
 
 export const gameDataContext = React.createContext(null);
 
@@ -22,14 +21,12 @@ const Game = () => {
     dispatch({type: ACTIONS.INIT})
   }, []);
 
-  // useEffect(() => {
-  //   if(gameData.currentPlayer === 'player_2'){
-  //     console.log('player_2', gameData);
-  //     dispatch({type: ACTIONS.RANDOM_ATTACK});
-  //     return;
-  //   }
-  //   console.log('player_1', gameData);
-  // }, [gameData.currentPlayer]);
+  useEffect(() => {
+    if(gameData.currentPlayer === 'player_1') return;
+    setTimeout(() => {
+      dispatch({type: ACTIONS.RANDOM_ATTACK});
+    }, 250);
+  }, [gameData.currentPlayer]);
 
   useEffect(() => {
     console.log(gameData)

@@ -60,24 +60,20 @@ export function reducer(state, action){
         case ACTIONS.ATTACK: 
             prevState = {...state};
             const hitData = players.player_2.attack(action.payload.row, action.payload.column)[0];  
-            players.changeTurn();
             console.log(hitData);
             prevState.hitData = {...prevState.hitData, ...hitData} 
-            prevState.currentPlayer = 'player_2';
+            prevState.currentPlayer = players.changeTurn();
+            return {...prevState};
+        
+        case ACTIONS.RANDOM_ATTACK:
+            console.log("in")
+            prevState = {...state};
+            prevState.currentPlayer = 'player_1';
             players.computerAttack();
             prevState.board = players.player_1.getGameBoard();
-            prevState.currentPlayer = 'player_1';
+            prevState.currentPlayer = players.changeTurn();
+            console.log(prevState);
             return {...prevState};
-
-        // case ACTIONS.RANDOM_ATTACK:
-        //     prevState = {...state};
-        //     players.computerAttack();
-        //     console.log(players.player_1.getGameBoard());
-        //     prevState.board = players.player_1.getGameBoard();
-        //     prevState.currentPlayer = 'player_1';
-        //     console.log(prevState);
-        //     return {...prevState};
-            // return {...prevState};
 
         default:
             throw new Error();
