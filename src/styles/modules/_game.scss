@@ -2,9 +2,9 @@ $grid-size: 50px;
 $board-color: rgb(11, 209, 44);
 $grid-color: $primary-color;
 $grid-border: 1px solid rgb(11, 209, 44);
-$ship-part-color: #ef476f;
+$ship-part-color: $pink;
 $highlight-positive: $green;
-$highlight-negative: rgb(189, 167, 167);
+$highlight-negative: $negative;
 
 .game{
     margin: 1rem;
@@ -105,6 +105,7 @@ $highlight-negative: rgb(189, 167, 167);
             }
             & .grid-ic--pointer{
                 z-index: -1;
+                // fill: $negative;
             }
             & .grid-ic--fail, & .grid-ic--shield, & .grid-ic--pass{
                 width: calc($grid-size - 25px);
@@ -151,8 +152,8 @@ $highlight-negative: rgb(189, 167, 167);
     }
 }
 
-.game[data-status='true']{
-    & .opponent-board{
+.game{
+    & .opponent-board.active{
         & .game-board--grid{
             &:hover .grid-ic--crosshair{
                 display: initial;
@@ -161,6 +162,16 @@ $highlight-negative: rgb(189, 167, 167);
             }
         }
     }
+    & .inactive{
+        & .game-board--grid{
+            & .grid-ic--pointer{
+                fill: $negative;
+            }
+            & .grid-ic--crosshair{
+                display: none;
+            }
+        }
+    }   
 }
 
 @keyframes flow {
