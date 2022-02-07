@@ -5,18 +5,28 @@ import { players } from '../../game_logic/Players';
 // export const player_2_Data = Game_Board();
 
 export const ACTIONS = {
+    INIT: "initiate",
     ADD_SHIP: "add_ship",
     ROTATE_SHIP: "rotate_ship",
     GENERATE_BOARD: "generate_board",
     START_GAME: "start_game",
     ATTACK: "attack",
+    RANDOM_ATTACK: "random_attack"
 }
 
 export function reducer(state, action){
+    let prevState;
     switch(action.type){
+        case ACTIONS.INIT:
+            prevState = {...state}
+            prevState.board = players.player_1.getGameBoard();
+            return {...prevState}
+
         case ACTIONS.ADD_SHIP:
             players.player_1.assignShipCoordinates(action.payload.length, action.payload.orientation, action.payload.coordinate, action.payload.shipName);
-            return {...state, board: players.player_1.getGameBoard(), shipData:{...state.shipData, player: players.player_1.getShipData()}};
+            prevState = {...state};
+            prevState.board = players.player_1.getGameBoard();
+            return {...prevState};
         
         case ACTIONS.ROTATE_SHIP:
             players.player_1.removeShip(action.payload.shipName);
@@ -27,22 +37,48 @@ export function reducer(state, action){
             else{
                 players.player_1.assignShipCoordinates(action.payload.length, action.payload.toggleOrientation, action.payload.coordinate, action.payload.shipName);
             }
-            return {...state, board: players.player_1.getGameBoard(), shipData:{...state.shipData, player: players.player_1.getShipData()}};
+            prevState = {...state};
+            prevState.board = players.player_1.getGameBoard();
+            return {...prevState};
 
         case ACTIONS.GENERATE_BOARD:
+            prevState = {...state};
             players.player_1.generateBoard();
-            return {...state, board: players.player_1.getGameBoard(), shipData:{...state.shipData, player: players.player_1.getShipData()}};
+            prevState.board = players.player_1.getGameBoard();
+            console.log(prevState);
+            return {...prevState};
         
         case ACTIONS.START_GAME:
-            players.player_2.generateBoard();
             if(!players.player_1.getIsAllShipPlaced()){
                 return state;
             }
-            return {...state, isGameStarted: true}
+            prevState = {...state};
+            players.player_2.generateBoard();
+            prevState.isGameStarted = true;
+            return {...prevState};
 
         case ACTIONS.ATTACK: 
+            prevState = {...state};
             const hitData = players.player_2.attack(action.payload.row, action.payload.column)[0];  
-            return {...state, hitData: {...state.hitData, ...hitData}};
+            players.changeTurn();
+            console.log(hitData);
+            prevState.hitData = {...prevState.hitData, ...hitData} 
+            prevState.currentPlayer = 'player_2';
+            players.computerAttack();
+            prevState.board = players.player_1.getGameBoard();
+            prevState.currentPlayer = 'player_1';
+            return {...prevState};
+
+        // case ACTIONS.RANDOM_ATTACK:
+        //     prevState = {...state};
+        //     players.computerAttack();
+        //     console.log(players.player_1.getGameBoard());
+        //     prevState.board = players.player_1.getGameBoard();
+        //     prevState.currentPlayer = 'player_1';
+        //     console.log(prevState);
+        //     return {...prevState};
+            // return {...prevState};
+
         default:
             throw new Error();
     }

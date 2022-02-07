@@ -63,7 +63,9 @@ export const Game_Board = () => {
     const gameBoard = initialize();
     const shipData = {};
     let isAllShipPlaced = false;
-    const getGameBoard = () => gameBoard;
+    const getGameBoard = () => {
+        return gameBoard.map(data => data.slice());
+    };
 
     const removeShip = (shipName) => {
         const ship = shipData[shipName];
