@@ -1,10 +1,8 @@
 import React, { useEffect, useReducer } from 'react';
 import { players } from '../../game_logic/Players';
-import Menu from '../menu/Menu';
 import OpponentBoard from './OpponentBoard';
 import PlayerBoard from './PlayerBoard';
 import { ACTIONS, reducer } from './reducer';
-import Ships from './Ships';
 
 export const gameDataContext = React.createContext(null);
 
@@ -13,7 +11,7 @@ const Game = () => {
     board: [],
     hitData: {},
     playerHitData: {},
-    isGameStarted: false, 
+    isGameStarted: true, 
     currentPlayer: players.getCurrentPlayer()
   });
 
@@ -37,9 +35,9 @@ const Game = () => {
     
     <gameDataContext.Provider value={[gameData, dispatch]}>
       <div className='game' data-status={gameData.isGameStarted}>
-          {!gameData.isGameStarted && <Menu />}
+          {/* {!gameData.isGameStarted && <Menu />} */}
           <PlayerBoard />
-          {!gameData.isGameStarted && <Ships />}
+          {/* {!gameData.isGameStarted && <Ships />} */}
           {gameData.isGameStarted && <OpponentBoard currentPlayer={gameData.currentPlayer} />}
 
       </div>

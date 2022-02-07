@@ -150,6 +150,24 @@ $highlight-negative: $negative;
             background-color: $highlight-negative;
         }
     }
+
+    .life{
+        @include flexSetting(center, center, true);
+        &-ship-group{
+            @include flexSetting(center, center);
+            .life-ship{
+                @include flexSetting(center, center);
+                margin: 1rem .5rem;
+                .life-part--ic{
+                    margin: 0 .2rem;
+                    fill: red;
+                }
+                .life-part--ic.dead{
+                    fill: $negative;
+                }
+            }
+        }
+    }
 }
 
 .game[data-status='true']{
