@@ -45,7 +45,6 @@ export function reducer(state, action){
             prevState = {...state};
             players.player_1.generateBoard();
             prevState.board = players.player_1.getGameBoard();
-            console.log(prevState);
             return {...prevState};
         
         case ACTIONS.START_GAME:
@@ -59,20 +58,17 @@ export function reducer(state, action){
 
         case ACTIONS.ATTACK: 
             prevState = {...state};
-            const hitData = players.player_2.attack(action.payload.row, action.payload.column)[0];  
-            console.log(hitData);
+            const hitData = players.player_2.attack(action.payload.row, action.payload.column)[0];
             prevState.hitData = {...prevState.hitData, ...hitData} 
             prevState.currentPlayer = players.changeTurn();
             return {...prevState};
         
         case ACTIONS.RANDOM_ATTACK:
-            console.log("in")
             prevState = {...state};
             prevState.currentPlayer = 'player_1';
             players.computerAttack();
             prevState.board = players.player_1.getGameBoard();
             prevState.currentPlayer = players.changeTurn();
-            console.log(prevState);
             return {...prevState};
 
         default:

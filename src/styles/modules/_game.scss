@@ -152,6 +152,12 @@ $highlight-negative: $negative;
     }
 }
 
+.game[data-status='true']{
+    & .game-ship{
+        cursor: default;
+    }
+}
+
 .game{
     & .opponent-board.active{
         & .game-board--grid{

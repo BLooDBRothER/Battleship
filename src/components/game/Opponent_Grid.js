@@ -14,14 +14,12 @@ const OpponentGrid = ({ row, column }) => {
 
   useEffect(() => {
     const type = gameData.hitData[`${row}${column}`];
-    // console.log(row, column , type, gameData.hitData);
     if(!type) return;
     setHitType(type);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameData.hitData]);
 
   const attack = (e) => {
-    console.log(gameData.currentPlayer);
     if(gameData.currentPlayer !== 'player_1') return;
     dispatch({type: ACTIONS.ATTACK, payload: {row, column}});
   }
