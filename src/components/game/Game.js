@@ -17,6 +17,7 @@ const Game = () => {
     },
     hitData:{},
     isGameStarted: false,  
+    currentPlayer: players.getCurrentPlayer()
   });
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const Game = () => {
           {!gameData.isGameStarted && <Menu />}
           <PlayerBoard />
           {!gameData.isGameStarted && <Ships />}
-          {gameData.isGameStarted && <OpponentBoard />}
+          {gameData.isGameStarted && <OpponentBoard currentPlayer={gameData.currentPlayer} />}
 
       </div>
     </gameDataContext.Provider>
