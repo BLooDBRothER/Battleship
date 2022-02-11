@@ -1,23 +1,22 @@
 import React, { useEffect, useReducer } from 'react';
+import { ACTIONS, reducer } from './reducer';
 import { players } from '../../game_logic/Players';
 import OpponentBoard from './OpponentBoard';
 import PlayerBoard from './PlayerBoard';
-import { ACTIONS, reducer } from './reducer';
+import Ships from './Ships';
+import Menu from '../menu/Menu';
 
 export const gameDataContext = React.createContext(null);
 
 const Game = () => {
   const [gameData, dispatch] = useReducer(reducer, {
-    board: [],
+    board: players.player_1.getGameBoard(),
     hitData: {},
     playerHitData: {},
-    isGameStarted: true, 
+    shipData: {},
+    isGameStarted: false, 
     currentPlayer: players.getCurrentPlayer()
   });
-
-  useEffect(() => {
-    dispatch({type: ACTIONS.INIT})
-  }, []);
 
   useEffect(() => {
     if(gameData.currentPlayer === 'player_1') return;
@@ -32,12 +31,11 @@ const Game = () => {
   }, [gameData]);
 
   return (
-    
     <gameDataContext.Provider value={[gameData, dispatch]}>
       <div className='game' data-status={gameData.isGameStarted}>
-          {/* {!gameData.isGameStarted && <Menu />} */}
+          {!gameData.isGameStarted && <Menu />}
           <PlayerBoard />
-          {/* {!gameData.isGameStarted && <Ships />} */}
+          {!gameData.isGameStarted && <Ships />}
           {gameData.isGameStarted && <OpponentBoard currentPlayer={gameData.currentPlayer} />}
 
       </div>

@@ -7,7 +7,7 @@ const PlayerBoard = () => {
   const gameData = useContext(gameDataContext)[0];
   return (
       <>
-        {gameData.isGameStarted && <Life />}
+        {gameData.isGameStarted && <Life shipData={gameData.shipData.player_1}/>}
         <div className={`game-board player-board ${gameData.currentPlayer === 'player_2' || !gameData.isGameStarted ? 'active' : 'inactive'}`}>
           {gameData.board.map((row, rowIdx) => {
             return row.map((grid, gridIdx) => {

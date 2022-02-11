@@ -1,11 +1,7 @@
 // import { Game_Board } from '../../game_logic/Game_Board';
 import { players } from '../../game_logic/Players';
 
-// export const player_1_Data = Game_Board();
-// export const player_2_Data = Game_Board();
-
 export const ACTIONS = {
-    INIT: "initiate",
     ADD_SHIP: "add_ship",
     ROTATE_SHIP: "rotate_ship",
     GENERATE_BOARD: "generate_board",
@@ -17,10 +13,6 @@ export const ACTIONS = {
 export function reducer(state, action){
     let prevState;
     switch(action.type){
-        case ACTIONS.INIT:
-            prevState = {...state}
-            prevState.board = players.player_1.getGameBoard();
-            return {...prevState}
 
         case ACTIONS.ADD_SHIP:
             players.player_1.assignShipCoordinates(action.payload.length, action.payload.orientation, action.payload.coordinate, action.payload.shipName);
@@ -53,13 +45,15 @@ export function reducer(state, action){
             }
             prevState = {...state};
             players.player_2.generateBoard();
+            prevState.shipData = players.createShipLifeData();
             prevState.isGameStarted = true;
             return {...prevState};
 
         case ACTIONS.ATTACK: 
             prevState = {...state};
-            const hitData = players.player_2.attack(action.payload.row, action.payload.column)[0];
+            const [hitData, hitShipName] = players.player_2.attack(action.payload.row, action.payload.column);
             prevState.hitData = {...prevState.hitData, ...hitData} 
+            prevState.shipData = hitShipName ? players.updateShipLife(hitShipName) : prevState.shipData;
             prevState.currentPlayer = players.changeTurn();
             return {...prevState};
         
@@ -68,6 +62,7 @@ export function reducer(state, action){
             prevState.currentPlayer = 'player_1';
             players.computerAttack();
             prevState.board = players.player_1.getGameBoard();
+            prevState.shipData = players.getPlayersLife();
             prevState.currentPlayer = players.changeTurn();
             return {...prevState};
 

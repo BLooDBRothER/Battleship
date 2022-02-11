@@ -112,7 +112,7 @@ const Grid = ({ row, column, data }) => {
         shipParent.removeChild(draggedElement);
       }
     }
-    setToggleData(prev => ({...prev, toEnable:false}))
+    setToggleData(prev => ({...prev, toEnable:false}));
   }
 
   return (
@@ -128,7 +128,7 @@ const Grid = ({ row, column, data }) => {
       {!data.isHit && <BiCrosshair className='grid-ic grid-ic--crosshair' />}
       {ship  && <Ship 
                   shipLength={ship.length} 
-                  shipName={ship.name} 
+                  shipName={ship.shipName} 
                   dispatch={dispatch} 
                   orientationIsVertical={ship.orientation === "vertical" ? true: false}
                   isDraggable={!gameData.isGameStarted} /> }

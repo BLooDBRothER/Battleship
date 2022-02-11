@@ -21,10 +21,6 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isD
 
     //Event Listener
     const handleDragStart = (e) => {
-        if(!isDraggable){
-            e.prevetDefault();
-            return;
-        }
         setIsRotateVisible(false);
         if(players.player_1.getShipData()[shipName]){
             players.player_1.removeShip(shipName);

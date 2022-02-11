@@ -17,7 +17,7 @@ const OpponentBoard = ({currentPlayer}) => {
             })
           }
         </div>
-        {gameData.isGameStarted && <Life />}
+        {gameData.isGameStarted && <Life shipData={gameData.shipData.player_2} />}
       </>
     );
 };
