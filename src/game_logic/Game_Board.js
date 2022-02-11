@@ -194,7 +194,7 @@ export const Game_Board = () => {
         }
         attackData[`${row}${column}`] = gridData.ship ? 'shipHit' : 'missHit';
         gameBoard[row][column] = {...gridData, isHit:true};
-        return [attackData, gridData.ship ? true : false];
+        return [attackData, gridData.ship?.shipName];
     }
     
     const attackSurround = (row, column, surroundCoordinatesIndex, index, attackData) => {
