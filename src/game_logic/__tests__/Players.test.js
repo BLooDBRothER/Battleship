@@ -1,6 +1,7 @@
-import { players } from "../Players";
+import { Players } from "../Players";
 
 describe("player logic", () => {
+    let players = Players();
 
     beforeAll(() => {
         players.player_1.generateBoard();

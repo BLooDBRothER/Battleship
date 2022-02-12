@@ -86,4 +86,4 @@ export const Players = () => {
     return {player_1, player_2, getCurrentPlayer, changeTurn, computerAttack, createShipLifeData, updateShipLife, getPlayersLife, checkIsGameOver};
 }
 
-export const players = Players();
+// export const players = Players();
