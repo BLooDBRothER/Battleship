@@ -54,7 +54,11 @@ export function reducer(state, action){
             const [hitData, hitShipName] = players.player_2.attack(action.payload.row, action.payload.column);
             prevState.hitData = {...prevState.hitData, ...hitData} 
             prevState.shipData = hitShipName ? players.updateShipLife(hitShipName) : prevState.shipData;
+            if(players.checkIsGameOver()){
+                prevState.playerWon = players.getCurrentPlayer();
+            }
             prevState.currentPlayer = players.changeTurn();
+            // console.log(state.currentPlayer, prevState.currentPlayer);
             return {...prevState};
         
         case ACTIONS.RANDOM_ATTACK:
@@ -63,6 +67,9 @@ export function reducer(state, action){
             players.computerAttack();
             prevState.board = players.player_1.getGameBoard();
             prevState.shipData = players.getPlayersLife();
+            if(players.checkIsGameOver()){
+                prevState.playerWon = 'Battle AI';
+            }
             prevState.currentPlayer = players.changeTurn();
             return {...prevState};
 

@@ -5,6 +5,7 @@ import OpponentBoard from './OpponentBoard';
 import PlayerBoard from './PlayerBoard';
 import Ships from './Ships';
 import Menu from '../menu/Menu';
+import GameOver from './GameOver';
 
 export const gameDataContext = React.createContext(null);
 
@@ -15,14 +16,19 @@ const Game = () => {
     playerHitData: {},
     shipData: {},
     isGameStarted: false, 
+    playerWon: '',
     currentPlayer: players.getCurrentPlayer()
   });
 
   useEffect(() => {
-    if(gameData.currentPlayer === 'player_1') return;
+    console.log(gameData.currentPlayer)
+  }, [gameData.currentPlayer]);
+
+  useEffect(() => {
+    if(gameData.currentPlayer === 'player_1' || gameData.playerWon !== '') return;
     setTimeout(() => {
       dispatch({type: ACTIONS.RANDOM_ATTACK});
-    }, 250);
+    }, 300);
   }, [gameData.currentPlayer]);
 
   useEffect(() => {
@@ -37,8 +43,8 @@ const Game = () => {
           <PlayerBoard />
           {!gameData.isGameStarted && <Ships />}
           {gameData.isGameStarted && <OpponentBoard currentPlayer={gameData.currentPlayer} />}
-
       </div>
+      {gameData.playerWon !== '' && <GameOver playerWon={gameData.playerWon} />}
     </gameDataContext.Provider>
   );
 };

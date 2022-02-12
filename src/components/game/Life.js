@@ -47,7 +47,7 @@ const LifePart = ({count, life}) => {
         for(let i=1; i<=count; i++){
             tempPart.push(
                 <div key={i} className='life-part'>
-                    <FaHeart className={`life-part--ic ${i<=life ? '' : 'dead'}`} />
+                    <FaHeart className={`life-part--ic ${life ? '' : 'dead'}`} />
                 </div>
             );
         }
