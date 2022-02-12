@@ -13,14 +13,28 @@ export const Players = () => {
 
     const player_1 = Game_Board();
     const player_2 = Game_Board();
-    const players_life = {};
+    const players_ship_life = {};
+    
+    const players_life = {
+        player_1: 20,
+        player_2: 20
+    }
 
-    const getPlayersLife = () => players_life;
+    const checkIsGameOver = () => {
+        const playerName = currentPlayer === 'player_1' ? 'player_2' : 'player_1';
+        return players_life[playerName] === 0;
+    }
+
+    const updatePlayerLife = (playerName) => {
+        players_life[playerName] -= 1;
+    }
+
+    const getPlayersLife = () => players_ship_life;
 
     const createShipLifeData = () => {
-        players_life.player_1 = getShipsLife(player_1);
-        players_life.player_2 = getShipsLife(player_2);
-        return {...players_life};
+        players_ship_life.player_1 = getShipsLife(player_1);
+        players_ship_life.player_2 = getShipsLife(player_2);
+        return {...players_ship_life};
     }
 
     const getShipsLife = (player) => {
@@ -34,10 +48,11 @@ export const Players = () => {
 
     const updateShipLife = (shipName) => {
         const [playerName, playerObj] = currentPlayer === 'player_1' ? ['player_2', player_2] : ['player_1', player_1];
+        updatePlayerLife(playerName);
         const changeShipLife = {};
         changeShipLife[shipName] = playerObj.getShipData()[shipName].getLife();
-        players_life[playerName] = {...players_life[playerName], ...changeShipLife};
-        return {...players_life};
+        players_ship_life[playerName] = {...players_ship_life[playerName], ...changeShipLife};
+        return {...players_ship_life};
     }
 
     let currentPlayer = 'player_1';
@@ -68,7 +83,7 @@ export const Players = () => {
         return possibleMoves.length;
     }
 
-    return {player_1, player_2, getCurrentPlayer, changeTurn, computerAttack, createShipLifeData, updateShipLife, getPlayersLife};
+    return {player_1, player_2, getCurrentPlayer, changeTurn, computerAttack, createShipLifeData, updateShipLife, getPlayersLife, checkIsGameOver};
 }
 
 export const players = Players();
