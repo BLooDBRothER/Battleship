@@ -1,0 +1,48 @@
+.hide{
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(.4rem);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.gameover{
+    @include flexSetting(space-evenly, center, true);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: 400px;
+    background-color: $primary-color;
+    border: 1px solid $secondary-color;
+    border-radius: 10px;
+    padding: 1rem;
+    z-index: 6;
+
+    & .gameover--options{
+        @include flexSetting(space-evenly, center);
+        width: 100%;
+        font-size: 1.3rem;
+
+        & .gameover--option{
+            padding: .5rem 1rem;
+            background-color: $pink;
+            border: 2px solid transparent;
+            border-radius: 1rem;
+            cursor: pointer;
+            &:hover{
+                border-color: $pink;
+                background-color: #4158D0;
+                background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+                color: $secondary-color;
+                background-clip: text;
+                text-fill-color: transparent;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+    }
+}
