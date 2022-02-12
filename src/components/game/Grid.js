@@ -132,9 +132,9 @@ const Grid = ({ row, column, data }) => {
                   dispatch={dispatch} 
                   orientationIsVertical={ship.orientation === "vertical" ? true: false}
                   isDraggable={!gameData.isGameStarted} /> }
-      {data.isHit && data.ship && <div className='grid-ic--cnt'><FaSkullCrossbones className='grid-ic--normal grid-ic--pass' /></div>}
-      {data.isHit && !data.ship && !data.isSurroundHit && <GiCrossMark className='grid-ic grid-ic--fail faded' />}
-      {data.isHit && !data.ship && data.isSurroundHit && <BsShieldFillX className='grid-ic grid-ic--shield' />}
+      {data.isHit && data.ship && <div className='grid-ic--cnt'><FaSkullCrossbones className='grid-ic--normal grid-ic--pass animate__animated animate__bounceIn' /></div>}
+      {data.isHit && !data.ship && !data.isSurroundHit && <div className='grid-ic--cnt'><GiCrossMark className='grid-ic--normal grid-ic--fail faded animate__animated animate__headShake' /></div>}
+      {data.isHit && !data.ship && data.isSurroundHit && <div className='grid-ic--cnt'><BsShieldFillX className='grid-ic--normal grid-ic--shield animate__animated animate__bounceIn' /></div>}
     </div>
     )
 };

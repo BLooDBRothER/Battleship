@@ -103,6 +103,13 @@ $highlight-negative: $negative;
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+            & .grid-ic--cnt{
+                width: $grid-size;
+                height: $grid-size;
+                background-color: rgba(0, 34, 51, 0.6);
+                @include flexSetting(center, center);
+                z-index: 3;
+            }
             & .grid-ic--pointer{
                 z-index: -1;
                 // fill: $negative;
@@ -121,14 +128,6 @@ $highlight-negative: $negative;
             }
             & .grid-ic--shield{
                 fill: $blue;
-            }
-            & .grid-ic--cnt{
-                width: $grid-size;
-                height: $grid-size;
-                background-color: $primary-color;
-                @include flexSetting(center, center);
-                z-index: 3;
-
             }
             & .grid-ic--pass{
                 fill: $green;

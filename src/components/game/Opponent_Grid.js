@@ -32,9 +32,9 @@ const OpponentGrid = ({ row, column }) => {
      >
       {hitType === "" && <VscDebugBreakpointLog className='grid-ic grid-ic--pointer' />}
       {hitType === "" && <BiCrosshair className='grid-ic grid-ic--crosshair' />}
-      {hitType === "shipHit" && <FaSkullCrossbones className='grid-ic grid-ic--pass' />}
-      {hitType === "missHit"  && <GiCrossMark className='grid-ic grid-ic--fail faded' />}
-      {hitType === "surroundHit"  && <BsShieldFillX className='grid-ic grid-ic--shield' />}
+      {hitType === "shipHit" && <div className='grid-ic--cnt'><FaSkullCrossbones className='grid-ic--normal grid-ic--pass animate__animated animate__bounceIn animate__faster' /></div>}
+      {hitType === "missHit"  && <div className='grid-ic--cnt'><GiCrossMark className='grid-ic--normal grid-ic--fail faded animate__animated animate__headShake animate__faster' /></div>}
+      {hitType === "surroundHit"  && <div className='grid-ic--cnt'><BsShieldFillX className='grid-ic--normal grid-ic--shield animate__animated aanimate__bounceIn animate__faster' /></div>}
     </div>
     )
 };
