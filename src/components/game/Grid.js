@@ -6,9 +6,8 @@ import { BiCrosshair } from 'react-icons/bi';
 import { VscDebugBreakpointLog } from 'react-icons/vsc';
 import { BsShieldFillX } from 'react-icons/bs';
 import { gameDataContext } from './Game';
-import { ACTIONS,  } from './reducer';
+import { ACTIONS, players } from './reducer';
 import Ship from './Ship';
-import { players } from '../../game_logic/Players';
 
 const togglePositiveHighlightGrid = (toHighlight, row, column, shipLength, orientation) => {
   if(orientation === "horizontal"){

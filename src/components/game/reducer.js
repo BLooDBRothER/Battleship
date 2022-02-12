@@ -1,5 +1,11 @@
 // import { Game_Board } from '../../game_logic/Game_Board';
-import { players } from '../../game_logic/Players';
+import { Players } from '../../game_logic/Players';
+
+export let players;
+
+const setPlayers = () => {
+    players = Players();
+}
 
 export const ACTIONS = {
     ADD_SHIP: "add_ship",
@@ -7,12 +13,26 @@ export const ACTIONS = {
     GENERATE_BOARD: "generate_board",
     START_GAME: "start_game",
     ATTACK: "attack",
-    RANDOM_ATTACK: "random_attack"
+    RANDOM_ATTACK: "random_attack",
+    SET_INITIAL: 'set_initial'
 }
 
 export function reducer(state, action){
     let prevState;
     switch(action.type){
+        case ACTIONS.SET_INITIAL:
+            setPlayers();
+            console.log(players);
+            const INITIAL_VALUE = {
+                board: players.player_1.getGameBoard(),
+                hitData: {},
+                playerHitData: {},
+                shipData: {},
+                isGameStarted: false, 
+                playerWon: '',
+                currentPlayer: players.getCurrentPlayer()
+            }
+            return {...INITIAL_VALUE};
 
         case ACTIONS.ADD_SHIP:
             players.player_1.assignShipCoordinates(action.payload.length, action.payload.orientation, action.payload.coordinate, action.payload.shipName);
@@ -58,7 +78,6 @@ export function reducer(state, action){
                 prevState.playerWon = players.getCurrentPlayer();
             }
             prevState.currentPlayer = players.changeTurn();
-            // console.log(state.currentPlayer, prevState.currentPlayer);
             return {...prevState};
         
         case ACTIONS.RANDOM_ATTACK:

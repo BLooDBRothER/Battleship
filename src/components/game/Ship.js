@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaMapPin } from 'react-icons/fa';
 import { AiOutlineRotateRight } from 'react-icons/ai';
-import { ACTIONS } from './reducer';
-import { players } from '../../game_logic/Players';
+import { ACTIONS, players } from './reducer';
 
 const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isDraggable=true}) => {
     const [isRotateVisible, setIsRotateVisible] = useState(false);
