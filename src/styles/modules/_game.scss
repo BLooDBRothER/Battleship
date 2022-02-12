@@ -97,7 +97,7 @@ $highlight-negative: $negative;
             height: $grid-size;
             position: relative;
             border: none;
-            & .grid-ic{
+            & .grid-ic, & .grid-ic--cnt{
                 position: absolute;
                 top: 50%;
                 left: 50%;
@@ -121,6 +121,14 @@ $highlight-negative: $negative;
             }
             & .grid-ic--shield{
                 fill: $blue;
+            }
+            & .grid-ic--cnt{
+                width: $grid-size;
+                height: $grid-size;
+                background-color: $primary-color;
+                @include flexSetting(center, center);
+                z-index: 3;
+
             }
             & .grid-ic--pass{
                 fill: $green;
