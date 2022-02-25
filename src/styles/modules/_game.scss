@@ -13,7 +13,7 @@ $highlight-negative: $negative;
     &-menu{
         &--option{
             @include flexSetting(center, center);
-            margin: 1rem 0;
+            margin: 2.4rem 0;
             font-size: 1.4rem;
             cursor: pointer;
             &:hover{
@@ -29,6 +29,29 @@ $highlight-negative: $negative;
             &-ic{
                 margin-right: .5rem;
                 fill: $ship-part-color;
+            }
+        }
+        & .player_name{
+            @include flexSetting(center, center);
+            &--value{
+                margin: 0 0 0 .5rem;
+                color: $green;
+                background-color: transparent;
+                border: none;
+                border-bottom: 1px solid transparent;
+                outline: none;
+                font-size: 2em;
+                width: 120px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                &:focus{
+                    border-color: $blue;
+                }
+            }
+            &--ic{
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
             }
         }
     }
@@ -91,7 +114,7 @@ $highlight-negative: $negative;
         // gap: 1px;
         padding: 2px;
         border: $grid-border;
-        margin: 0 5rem;
+        margin: .5rem 0;
         &--grid{
             width: $grid-size;
             height: $grid-size;

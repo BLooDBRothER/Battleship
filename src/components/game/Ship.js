@@ -62,6 +62,7 @@ const Ship = ({ shipLength, shipName, dispatch, orientationIsVertical=false, isD
             {(isRotateVisible && isDraggable) && <AiOutlineRotateRight className='game-ship--rotate' onClick={handleRotate} />}
             <div 
              className={`game-ship ship-${shipLength} ${isVertical && "vertical"}`} 
+             onClick={!isDraggable ? null : handleRotate}
              draggable={isDraggable} 
              onDragStart={!isDraggable ? null :handleDragStart} 
              onDragEnd={!isDraggable ? null : handleDragEnd}
