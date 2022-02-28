@@ -18,7 +18,7 @@ export const ACTIONS = {
 }
 
 export function reducer(state, action){
-    let prevState;
+    let newState;
     switch(action.type){
         case ACTIONS.SET_INITIAL:
             setPlayers();
@@ -36,9 +36,9 @@ export function reducer(state, action){
 
         case ACTIONS.ADD_SHIP:
             players.player_1.assignShipCoordinates(action.payload.length, action.payload.orientation, action.payload.coordinate, action.payload.shipName);
-            prevState = {...state};
-            prevState.board = players.player_1.getGameBoard();
-            return {...prevState};
+            newState = {...state};
+            newState.board = players.player_1.getGameBoard();
+            return {...newState};
         
         case ACTIONS.ROTATE_SHIP:
             players.player_1.removeShip(action.payload.shipName);
@@ -49,48 +49,48 @@ export function reducer(state, action){
             else{
                 players.player_1.assignShipCoordinates(action.payload.length, action.payload.toggleOrientation, action.payload.coordinate, action.payload.shipName);
             }
-            prevState = {...state};
-            prevState.board = players.player_1.getGameBoard();
-            return {...prevState};
+            newState = {...state};
+            newState.board = players.player_1.getGameBoard();
+            return {...newState};
 
         case ACTIONS.GENERATE_BOARD:
-            prevState = {...state};
+            newState = {...state};
             players.player_1.generateBoard();
-            prevState.board = players.player_1.getGameBoard();
-            return {...prevState};
+            newState.board = players.player_1.getGameBoard();
+            return {...newState};
         
         case ACTIONS.START_GAME:
             if(!players.player_1.getIsAllShipPlaced()){
                 return state;
             }
-            prevState = {...state};
+            newState = {...state};
             players.player_2.generateBoard();
-            prevState.shipData = players.createShipLifeData();
-            prevState.isGameStarted = true;
-            return {...prevState};
+            newState.shipData = players.createShipLifeData();
+            newState.isGameStarted = true;
+            return {...newState};
 
         case ACTIONS.ATTACK: 
-            prevState = {...state};
-            const [hitData, hitShipName] = players.player_2.attack(action.payload.row, action.payload.column);
-            prevState.hitData = {...prevState.hitData, ...hitData} 
-            prevState.shipData = hitShipName ? players.updateShipLife(hitShipName) : prevState.shipData;
+            newState = {...state};
+            const [hitData, hitShip] = players.player_2.attack(action.payload.row, action.payload.column);
+            newState.hitData = {...newState.hitData, ...hitData} 
+            newState.shipData = hitShip ? players.updateShipLife(hitShip.shipName) : newState.shipData;
             if(players.checkIsGameOver()){
-                prevState.playerWon = players.getCurrentPlayer();
+                newState.playerWon = players.getCurrentPlayer();
             }
-            prevState.currentPlayer = players.changeTurn();
-            return {...prevState};
+            newState.currentPlayer = players.changeTurn();
+            return {...newState};
         
         case ACTIONS.RANDOM_ATTACK:
-            prevState = {...state};
-            prevState.currentPlayer = 'player_1';
+            newState = {...state};
+            newState.currentPlayer = 'player_1';
             players.computerAttack();
-            prevState.board = players.player_1.getGameBoard();
-            prevState.shipData = players.getPlayersLife();
+            newState.board = players.player_1.getGameBoard();
+            newState.shipData = players.getPlayersLife();
             if(players.checkIsGameOver()){
-                prevState.playerWon = 'Battle AI';
+                newState.playerWon = 'Battle AI';
             }
-            prevState.currentPlayer = players.changeTurn();
-            return {...prevState};
+            newState.currentPlayer = players.changeTurn();
+            return {...newState};
 
         default:
             throw new Error();

@@ -43,6 +43,10 @@ const shipList = [
     }
 ];
 
+export const isValidCoordinate = (row, column) => {
+    return ((row >=0 && row <= 9) && (column >=0 && column <=9)) ? true : false;
+}
+
 export const Game_Board = () => {
     
     const initialize = () => {
@@ -127,10 +131,6 @@ export const Game_Board = () => {
         return true;
     }
 
-    const isValidCoordinate = (row, column) => {
-        return ((row >=0 && row <= 9) && (column >=0 && column <=9)) ? true : false;
-    }
-
     const checkHorizontalPlacement = (length, [...coordinate]) => {
         return isValidCoordinate(coordinate[0], coordinate[1]+length-1);
     }
@@ -183,6 +183,7 @@ export const Game_Board = () => {
     }
 
     const attack = (row, column) => {
+        console.log(row, column);
         const attackData = {};
         const gridData = getGridData([row, column]);
         if(gridData.ship){
@@ -194,7 +195,8 @@ export const Game_Board = () => {
         }
         attackData[`${row}${column}`] = gridData.ship ? 'shipHit' : 'missHit';
         gameBoard[row][column] = {...gridData, isHit:true};
-        return [attackData, gridData.ship?.shipName];
+        console.log(getGameBoard());
+        return [attackData, gridData.ship];
     }
     
     const attackSurround = (row, column, surroundCoordinatesIndex, index, attackData) => {

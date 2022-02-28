@@ -16,8 +16,8 @@ const Game = () => {
   }, [])
 
   useEffect(() => {
-    console.log(gameData.currentPlayer)
-  }, [gameData.currentPlayer]);
+    console.log(gameData.hitData)
+  }, [gameData.hitData]);
 
   useEffect(() => {
     if(gameData.currentPlayer === 'player_1' || gameData.playerWon !== '') return;

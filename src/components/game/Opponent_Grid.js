@@ -14,8 +14,9 @@ const OpponentGrid = ({ row, column }) => {
 
   useEffect(() => {
     const type = gameData.hitData[`${row}${column}`];
-    if(!type) return;
-    setHitType(type);
+    // if(!type) return;
+    !type ? setHitType("") : setHitType(type);
+    // setHitType(type);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameData.hitData]);
 
