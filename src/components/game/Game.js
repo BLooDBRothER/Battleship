@@ -5,6 +5,8 @@ import PlayerBoard from './PlayerBoard';
 import Ships from './Ships';
 import Menu from '../menu/Menu';
 import GameOver from './GameOver';
+import HowTo from '../HowTo';
+import Credit from '../Credit';
 
 export const gameDataContext = React.createContext(null);
 
@@ -39,6 +41,8 @@ const Game = () => {
         </div>
       }
       {gameData && gameData.playerWon !== '' && <GameOver />}
+      <HowTo />
+      <Credit />
     </gameDataContext.Provider>
   );
 };

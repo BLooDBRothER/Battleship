@@ -15,7 +15,7 @@ const GameOver = () => {
     return (
         <>
             <div className='hide'></div>
-            <div className='gameover'>
+            <div className='gameover animate__animated animate__fadeIn'>
                 <h1>GameOver</h1>
                 <h1>{gameData.playerWon} has Own</h1>
                 <div className='gameover--options'>

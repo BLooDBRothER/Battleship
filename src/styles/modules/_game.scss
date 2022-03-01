@@ -20,6 +20,7 @@ $highlight-negative: $negative;
         &--option{
             @include flexSetting(center, center);
             margin: 2.4rem 0;
+            user-select: none;
             font-size: clamp(.8rem, 4vw, 1.4rem);
             cursor: pointer;
             &:hover{
