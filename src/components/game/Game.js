@@ -16,10 +16,6 @@ const Game = () => {
   }, [])
 
   useEffect(() => {
-    console.log(gameData.hitData)
-  }, [gameData.hitData]);
-
-  useEffect(() => {
     if(gameData.currentPlayer === 'player_1' || gameData.playerWon !== '') return;
     setTimeout(() => {
       dispatch({type: ACTIONS.RANDOM_ATTACK});
@@ -33,8 +29,12 @@ const Game = () => {
       {gameData && 
         <div className='game' data-status={gameData.isGameStarted}>
             {!gameData.isGameStarted && <Menu />}
-            <PlayerBoard />
-            {!gameData.isGameStarted && <Ships />}
+            {gameData.isGameStarted ? <PlayerBoard /> : 
+              <div className='game-menu-board'>
+              <PlayerBoard />
+              {!gameData.isGameStarted && <Ships />}
+            </div>
+            }
             {gameData.isGameStarted && <OpponentBoard currentPlayer={gameData.currentPlayer} />}
         </div>
       }

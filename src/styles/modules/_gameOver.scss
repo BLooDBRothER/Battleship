@@ -15,20 +15,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%;
-    height: 400px;
+    height: clamp(250px, 55vw, 400px);
     background-color: $primary-color;
     border: 1px solid $secondary-color;
     border-radius: 10px;
     padding: 1rem;
     z-index: 6;
 
+    & h1{
+        font-size: clamp(1rem, 4vw, 2rem)
+    }
+
     & .gameover--options{
         @include flexSetting(space-evenly, center);
         width: 100%;
-        font-size: 1.3rem;
+        font-size: clamp(.8rem, 4vw, 1.3rem);
 
         & .gameover--option{
-            padding: .5rem 1rem;
+            padding: clamp(.1rem, 3vw, .5rem) clamp(.5rem, 3vw, 1rem);
             background-color: $pink;
             border: 2px solid transparent;
             border-radius: 1rem;
@@ -44,5 +48,11 @@
                 -webkit-text-fill-color: transparent;
             }
         }
+    }
+}
+
+@media (max-width: 1050px){
+    .gameover{
+        width: 80%;
     }
 }

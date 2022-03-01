@@ -75,7 +75,7 @@ export function reducer(state, action){
             newState.hitData = {...newState.hitData, ...hitData} 
             newState.shipData = hitShip ? players.updateShipLife(hitShip.shipName) : newState.shipData;
             if(players.checkIsGameOver()){
-                newState.playerWon = players.getCurrentPlayer();
+                newState.playerWon = localStorage.getItem('playerName');
             }
             newState.currentPlayer = players.changeTurn();
             return {...newState};

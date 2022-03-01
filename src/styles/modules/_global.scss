@@ -19,6 +19,7 @@ html{
     background-color: $primary-color;
     color: $secondary-color;
     font-family: $custom-font;
+    overflow-x: hidden;
 }
 
 .cursor-grabbing{

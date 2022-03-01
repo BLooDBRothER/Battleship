@@ -1,4 +1,4 @@
-$grid-size: 50px;
+$grid-size: clamp(30px, 6vw, 50px);
 $board-color: rgb(11, 209, 44);
 $grid-color: $primary-color;
 $grid-border: 1px solid rgb(11, 209, 44);
@@ -9,12 +9,18 @@ $highlight-negative: $negative;
 .game{
     margin: 1rem;
     @include flexSetting(space-evenly, center);
+    flex-wrap: wrap;
+
+    &-menu-board{
+        @include flexSetting(space-evenly, center);
+    }
 
     &-menu{
+        margin: 1rem 0;
         &--option{
             @include flexSetting(center, center);
             margin: 2.4rem 0;
-            font-size: 1.4rem;
+            font-size: clamp(.8rem, 4vw, 1.4rem);
             cursor: pointer;
             &:hover{
                 background-color: #4158D0;
@@ -33,6 +39,9 @@ $highlight-negative: $negative;
         }
         & .player_name{
             @include flexSetting(center, center);
+            &--greeting{
+                font-size: clamp(1rem, 4vw, 2rem);
+            }
             &--value{
                 margin: 0 0 0 .5rem;
                 color: $green;
@@ -40,8 +49,8 @@ $highlight-negative: $negative;
                 border: none;
                 border-bottom: 1px solid transparent;
                 outline: none;
-                font-size: 2em;
-                width: 120px;
+                font-size: clamp(1rem, 4vw, 2rem);
+                width: clamp(60px, 8vw, 120px);
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 &:focus{
@@ -78,6 +87,7 @@ $highlight-negative: $negative;
 
     &-ships{
         @include flexSetting(space-evenly, center, true);
+        margin: 0 0 0 clamp(1rem, 4vw, 5rem);
         &--group{
             @include flexSetting(flex-start, center);
             width: fit-content;
@@ -89,7 +99,7 @@ $highlight-negative: $negative;
         &.vertical{
             flex-direction: column;
         }
-        margin: 1rem;
+        margin: clamp(.3rem, 2vw, 1rem);
         cursor: grab;
         background-color: $primary-color;
         border: $grid-border;
@@ -248,5 +258,41 @@ $highlight-negative: $negative;
 
     100%{
         background-image: linear-gradient(0deg, #f093fb 0%, #f5576c 100%);
+    }
+}
+
+@media (max-width: 1430px){
+    .game{
+        flex-direction: column-reverse;
+    }
+}
+
+@media (max-width: 1040px){
+    .game{
+        flex-direction: column;
+    }
+    .game-menu-board{
+        @include flexSetting(space-evenly, center, true);
+    }
+}
+@media (max-width: 570px){
+    .game{
+        &-board{
+            &--grid{
+                & .grid-ic--fail, & .grid-ic--shield, & .grid-ic--pass{
+                    width: calc($grid-size - 15px);
+                    height: calc($grid-size - 15px);
+                }
+                & .grid-ic--crosshair{
+                    width: calc($grid-size - 10px);
+                    height: calc($grid-size - 10px);
+                    display: none;
+                }
+                & .grid-ic--pointer{
+                    width: calc($grid-size - 20px);
+                    height: calc($grid-size - 20px);
+                }
+            }
+        }
     }
 }
