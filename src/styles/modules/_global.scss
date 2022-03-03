@@ -41,6 +41,10 @@ html{
   display: none !important;
 }
 
+.no-overflow{
+  overflow: hidden;
+}
+
 .blue{
   color: $blue;
 }

@@ -89,6 +89,7 @@ $highlight-negative: $negative;
     &-ships{
         @include flexSetting(space-evenly, center, true);
         margin: 0 0 0 clamp(1rem, 4vw, 5rem);
+        width: clamp(300px, 50vw, 470px);
         &--group{
             @include flexSetting(flex-start, center);
             width: fit-content;

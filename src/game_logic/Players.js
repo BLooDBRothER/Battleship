@@ -83,13 +83,11 @@ export const Players = () => {
     }
 
     const aiAttackInitialization = ([...coordinate], hitShip) => {
-        console.log("ai Initial");
         aiData.hitShip = hitShip;
         aiData.lastHitCoordinate = coordinate;
         aiData.initialHitCoordinate = coordinate;
         aiData.filteredMoves = aiData.possibleMoves.filter(move => isValidCoordinate((coordinate[0] + move[0]), (coordinate[1] + move[1])));
         aiData.hitLock = aiData.filteredMoves[Math.floor(Math.random() * (aiData.filteredMoves.length))];
-        console.log(aiData, aiData.hitLock);
         aiData.triggerAi = true;
     }
 
@@ -100,20 +98,16 @@ export const Players = () => {
     }
 
     const aiAttack = () => {
-        console.log("ai attack", aiData);
         const movesToTry = aiData.hitLock;
         const currentCoordinate = [(aiData.lastHitCoordinate[0] + movesToTry[0]), (aiData.lastHitCoordinate[1] + movesToTry[1])];
         const stringCoordinate = currentCoordinate.join('');
         if(!possibleMoves.find(moves => moves === stringCoordinate)){
-            console.log('recu');
             filterCoordinate();
             aiAttack();
             return;
         }
-        console.log(aiData.lastHitCoordinate[0], aiData.lastHitCoordinate[1], currentCoordinate);
         const isHit = attackGivenCoordinate(currentCoordinate[0], currentCoordinate[1]);
         if(aiData.hitShip.getLife()[0] !== 0 && !isHit){
-            console.log('aifalise');
             filterCoordinate();
         }
         else{
@@ -123,7 +117,6 @@ export const Players = () => {
                     aiData.filteredMoves = aiData.filteredMoves.filter(move => move[indexToCompare] !== 0)
                 }
             }
-            console.log(aiData.filteredMoves);
             aiData.lastHitCoordinate = currentCoordinate;
             aiData.triggerAi = isHit.getLife()[0] !== 0 ? true : false;
         }
@@ -137,7 +130,6 @@ export const Players = () => {
         const randomCoordinateIndex = possibleMoves[Math.floor(Math.random() * (possibleMoves.length))];
         const [row, column] = deCodeStringCoordinate(randomCoordinateIndex);
         const hitShip = attackGivenCoordinate(row, column);
-        console.log(hitShip, hitShip?.getLife());
         if(hitShip?.getLife()[0]){
             aiAttackInitialization([row, column], hitShip);
         }

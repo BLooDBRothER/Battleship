@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { ACTIONS, reducer } from './reducer';
 import OpponentBoard from './OpponentBoard';
 import PlayerBoard from './PlayerBoard';
@@ -12,6 +12,13 @@ export const gameDataContext = React.createContext(null);
 
 const Game = () => {
   const [gameData, dispatch] = useReducer(reducer, false);
+
+  const [enableOverflow, setEnableOverflow] = useState(true);
+
+  useEffect(() => {
+    const html = document.querySelector("html");
+    enableOverflow ? html.classList.add('no-overflow') : html.classList.remove('no-overflow');
+  }, [enableOverflow])
 
   useEffect(() => {
     dispatch({type: ACTIONS.SET_INITIAL});
@@ -41,8 +48,8 @@ const Game = () => {
         </div>
       }
       {gameData && gameData.playerWon !== '' && <GameOver />}
-      <HowTo />
-      <Credit />
+      <HowTo setEnableOverflow={setEnableOverflow} />
+      <Credit setEnableOverflow={setEnableOverflow} />
     </gameDataContext.Provider>
   );
 };

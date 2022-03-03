@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaGithubAlt, FaLinkedin } from 'react-icons/fa';
+import { MdOutlineCreditCard } from 'react-icons/md';
 
-const Credit = () => {
+const Credit = ({setEnableOverflow}) => {
     const [toDisplay, setToDisplay] = useState(false);
+
+    useEffect(() => {
+        setEnableOverflow(toDisplay);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [toDisplay])
 
     return (
         <>
-            <h3 className='credit-btn' onClick={() => {setToDisplay(prev => !prev)}}>CREDIT</h3>
+            <MdOutlineCreditCard className='credit-btn' onClick={() => {setToDisplay(prev => !prev)}} />
             {toDisplay && 
             <div className='credit animate__animated animate__fadeIn'>
                 <h2>Thanks To</h2>

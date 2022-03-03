@@ -183,7 +183,6 @@ export const Game_Board = () => {
     }
 
     const attack = (row, column) => {
-        console.log(row, column);
         const attackData = {};
         const gridData = getGridData([row, column]);
         if(gridData.ship){
@@ -195,7 +194,6 @@ export const Game_Board = () => {
         }
         attackData[`${row}${column}`] = gridData.ship ? 'shipHit' : 'missHit';
         gameBoard[row][column] = {...gridData, isHit:true};
-        console.log(getGameBoard());
         return [attackData, gridData.ship];
     }
     

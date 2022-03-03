@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdLiveHelp } from 'react-icons/md';
 import arrangement_img from '../assets/how to/arrangement.png';
 import gameplay_img from '../assets/how to/gameplay.png';
@@ -6,8 +6,12 @@ import { FaSkullCrossbones, FaHeart } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
 import { BsShieldFillX } from 'react-icons/bs';
 
-const HowTo = () => {
+const HowTo = ({setEnableOverflow}) => {
     const [toDisplay, setToDisplay] = useState(false);
+    useEffect(() => {
+        setEnableOverflow(toDisplay);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [toDisplay])
     return (
         <>
             <MdLiveHelp className='help--ic' onClick={() => { setToDisplay(prev => !prev) }} />
@@ -53,6 +57,7 @@ const HowTo = () => {
                             <img src={gameplay_img} alt='gameplay' className='how-to--img gameplay-img'/>
                         </div>
                     </div>
+                    <p className='rule-link-p'><a className='rule-link' href="https://en.wikipedia.org/wiki/Battleship_(game)" target="_blank" rel="noreferrer">Wikipedia</a></p>
                 </div>
             }
         </>

@@ -22,7 +22,6 @@ export function reducer(state, action){
     switch(action.type){
         case ACTIONS.SET_INITIAL:
             setPlayers();
-            console.log(players);
             const INITIAL_VALUE = {
                 board: players.player_1.getGameBoard(),
                 hitData: {},
