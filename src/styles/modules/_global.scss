@@ -15,6 +15,22 @@ $negative: rgb(189, 167, 167);
 
 $custom-font: 'Montserrat', sans-serif;
 
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: $primary-color;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $green;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $pink;
+}
+
 html{
     background-color: $primary-color;
     color: $secondary-color;
