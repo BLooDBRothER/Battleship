@@ -17,7 +17,7 @@ const GameOver = () => {
             <div className='hide'></div>
             <div className='gameover animate__animated animate__fadeIn'>
                 <h1>GameOver</h1>
-                <h1>{gameData.playerWon} has Own</h1>
+                <h1>{gameData.playerWon} has Won</h1>
                 <div className='gameover--options'>
                     <div className='gameover--option' onClick={restartGame}>Restart</div>
                     <div className='gameover--option' onClick={resetGame}>Main Menu</div>
