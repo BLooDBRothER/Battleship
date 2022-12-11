@@ -120,7 +120,7 @@ $highlight-negative: $negative;
     &-board{
         display: grid;
         grid-template-columns: repeat(10, 1fr);
-        --total-grid-width: calc($grid-size * 10);
+        --total-grid-width: calc(#{$grid-size} * 10);
         $board-width: calc(var(--total-grid-width) + 11);
         width: $board-width;
         // gap: 1px;

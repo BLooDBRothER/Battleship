@@ -25,6 +25,7 @@ const Ships = () => {
 const ShipGroup = ({ totalShips, shipLength, shipName, setChildCount }) => {
   const [removeGroup, setRemoveGroup] = useState(false);
   const groupRef = useRef(null);
+  // eslint-disable-next-line
   useEffect(() => {
     if (groupRef.current?.childElementCount === 0) {
       setRemoveGroup(true);
