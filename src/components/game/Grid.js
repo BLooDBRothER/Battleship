@@ -73,10 +73,15 @@ const Grid = ({ row, column, data }) => {
   //Evnet Listener
   const handleDragEnter = (e) => {
     const isOverLapping = document.querySelector(`#grid-${row}-${column} .ship-container`);
-    if(isOverLapping && !isOverLapping.classList.contains("dragging")) return;
     const draggedElement = document.querySelector(".dragging");
     const length = +draggedElement.dataset.length;
     const orientation = draggedElement.dataset.orientation;
+    if(isOverLapping && !isOverLapping.classList.contains("dragging")) {
+      setTimeout(() => {
+        setToggleData({isValidPlace: false, toEnable: true, length, orientation});
+      }, 0);
+      return
+    };
     if(players.player_1.placeShip(length, orientation, [row, column])){
       setTimeout(() => {
         setToggleData({isValidPlace: true, toEnable: true, length, orientation});
